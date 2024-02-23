@@ -1,0 +1,29 @@
+﻿@page "/showdata"
+@inject IHttpClientFactory ClientFactory
+@using System.Net.Http.Json
+
+<h3>Weather Forecast</h3>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    foreach (var forecast in forecasts)
+    {
+        <p>@forecast.Date: @forecast.TemperatureC°C, @forecast.Summary</p>
+    }
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient("MyHttpClient");
+        forecasts = await client.GetFromJsonAsync<WeatherForecast[]>("weatherforecast");
+    }
+
+    public record WeatherForecast(DateTime Date, int TemperatureC, string Summary);
+}
