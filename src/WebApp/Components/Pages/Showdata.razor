@@ -18,11 +18,12 @@ else
 
 @code {
     private WeatherForecast[] forecasts;
+    private const string RequestUri = "weatherforecast";
 
     protected override async Task OnInitializedAsync()
     {
         var client = ClientFactory.CreateClient("MyHttpClient");
-        forecasts = await client.GetFromJsonAsync<WeatherForecast[]>("weatherforecast");
+        forecasts = await client.GetFromJsonAsync<WeatherForecast[]>(Showdata.RequestUri);
     }
 
     public record WeatherForecast(DateTime Date, int TemperatureC, string Summary);
