@@ -10,6 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Media.API\Media.API.csproj" />
   </ItemGroup>
 
 </Project>

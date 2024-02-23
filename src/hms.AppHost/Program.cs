@@ -17,4 +17,7 @@ var TenantApi = builder.AddProject<Projects.Tenant_API>("tenant-api")
 var WebApp = builder.AddProject<Projects.WebApp>("WebApp")
     .WithLaunchProfile("https");
 
+
+identityApi.WithReference(MediaApi);
+
 builder.Build().Run();
