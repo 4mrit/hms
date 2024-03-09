@@ -1,8 +1,13 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var sql = builder.AddSqlServer("sql");
+var sqlpw = builder.Configuration["sqlpassword"];
 
-var tenantDb = sql.AddDatabase("tenantdb");
+// var sqlServer = builder.AddSqlServerContainer("sqlserver" , sqlpw);
+// var postgresServer = builder.AddPostgresContainer("postgres");
+var dbServer = builder.AddMySqlContainer("mysqlserver");
+
+var sqlServer = dbServer;
+var tenantDb = sqlServer.AddDatabase("tenantdb");
 
 var identityApi = builder.AddProject<Projects.Identity_API>("identity-api")
     .WithLaunchProfile("https");
@@ -16,7 +21,6 @@ var TenantApi = builder.AddProject<Projects.Tenant_API>("tenant-api")
 
 var WebApp = builder.AddProject<Projects.WebApp>("WebApp")
     .WithLaunchProfile("https");
-
 
 identityApi.WithReference(MediaApi);
 

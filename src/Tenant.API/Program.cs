@@ -1,6 +1,7 @@
 using hms.Tenant.API.Services;
 using hms.Tenant.API.Data;
 
+using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +11,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder.AddSqlServerDbContext<TenantContext>("sql");
-//     static settings =>
-//         settings.ConnectionString = "Server=localhost;Database=tenantDatabase;User Id=SA;Password=tenantPassword"
-// );
+// builder.AddSqlServerDbContext<TenantContext>("tenantdb");
+// builder.AddNpgsqlDbContext<TenantContext>("tenantdb" 
+//     ,static settings => settings.ConnectionString = "Host=localhost;Database=CatalogDB;Username=postgres;Password=yourWeak(!)Password;Timeout=300;CommandTimeout=300");
+// Apply database migration automatically. Note that this approach is not
+// recommended for production scenarios. Consider generating SQL scripts from
+// migrations instead.
+// builder.Services.AddMigration<TenantContext, UsersSeed>();
+builder.AddMySqlDbContext<TenantContext>("tenantdb");
+
 builder.Services.AddTransient<DatabaseTenantService>();
 
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
 
@@ -29,6 +36,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 
-
-
 app.Run();
+

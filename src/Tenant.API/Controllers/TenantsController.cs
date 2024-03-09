@@ -18,4 +18,11 @@ public class TenantsController : ControllerBase
     public IEnumerable<HospitalTenant> Get(){
         return TenantService.GetAllTenants();
     }
+
+    [Route("AddDummyData")]
+    [HttpGet]
+    public ActionResult SetDummyData(){
+        TenantService.insertDummyData();
+        return Ok();
+    }
 }
