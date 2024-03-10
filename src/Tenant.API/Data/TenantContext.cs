@@ -12,4 +12,5 @@ public class TenantContext : DbContext
     public DbSet<MediaFile> MediaFiles { get; set; } =null!;
     public DbSet<HospitalTenant> Tenants { get; set; } =null!;
     public DbSet<TenantDatabase> TenantDatabases { get; set; } =null!;
+    
 }

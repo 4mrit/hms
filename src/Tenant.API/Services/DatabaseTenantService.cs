@@ -2,6 +2,8 @@ using hms.Tenant.API.Data;
 using hms.Tenant.API.Model;
 namespace hms.Tenant.API.Services;
 using hms.Media.API.Model;
+using Bogus;
+using Microsoft.EntityFrameworkCore;
 
 using System.Collections.ObjectModel;
 
@@ -16,47 +18,49 @@ public class DatabaseTenantService{
 
     public IEnumerable<HospitalTenant> GetAllTenants(){
         IEnumerable<HospitalTenant> tenants = null;
-        tenants = _context.Tenants ;
+        tenants = _context.Tenants
+            .Include(t => t.Scheme)
+            .Include(t => t.Features)
+            .Include(t => t.PrimaryDatabase)
+            .Include(t => t.SecondaryDatabase)
+            .ToList();
         return tenants;
     }
-    public void insertDummyData(){
+    public void InsertDummyData(){
+
         Console.WriteLine("Adding DummyData");
-        // HospitalTenant tenant = new ();
+        var faker = new Faker();
+
         HospitalTenant tenant = new HospitalTenant{
-            Id = 1
-            , Address = "sainamaina" 
-            , Name = "hamrohospial"
-            , Url = "hamrohospital.com"
-            , PrimaryDatabase = new TenantDatabase(){
-                Id = 1
-                ,ConnectionString = "primarydb"
+            
+            Address = faker.Address.StreetAddress()
+            , Name = faker.Name.FullName()
+            , Url = faker.Internet.DomainName()
+            , PrimaryDatabase = new TenantDatabase()
+            {
+                ConnectionString = faker.Internet.Url()
             }
-            , SecondaryDatabase =new TenantDatabase(){
-                Id = 2
-                ,ConnectionString = "secondarydb"
+            , SecondaryDatabase =new TenantDatabase() {
+                ConnectionString = faker.Internet.Url()
             }
-            , MediaRootPath = "/HOME/HAMROHOSPITAL"
+            , MediaRootPath = faker.System.FilePath()
             , Features = new Collection<Feature>(){
                 new Feature(){
-                    Id = 1
-                    , Name = "admin"
+                    Name = faker.Internet.UserName()
                 },
                 new Feature(){
-                    Id = 2
-                    , Name = "member"
+                    Name = faker.Internet.UserName()
                 }
             }
             , Scheme = new Scheme(){
-                Id = 1,
                 PrimaryColor = new Color{
-                    Id = 1,
-                    HexValue = "#000000"
+                    HexValue = faker.Random.Hexadecimal(length: 6)
                 },
                 SecondaryColor = new Color{
-                    Id = 2,
-                    HexValue = "#FFFFFF"
+                    HexValue = faker.Random.Hexadecimal(length: 6)
                 }
             }
+
         };
         _context.Add(tenant);
         _context.SaveChanges();
