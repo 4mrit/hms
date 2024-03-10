@@ -7,14 +7,16 @@
     <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="$(AspireVersion)" />
+    <PackageVersion Include="Bogus" Version="35.5.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageVersion Include="Aspire.Hosting" Version="$(AspireVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.1" />
+
+    <!-- service defaults -->
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.0-preview.2.23619.3" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0-alpha.1" />

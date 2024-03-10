@@ -22,7 +22,7 @@ public class TenantsController : ControllerBase
     [Route("AddDummyData")]
     [HttpGet]
     public ActionResult SetDummyData(){
-        TenantService.insertDummyData();
+        TenantService.InsertDummyData();
         return Ok();
     }
 }
