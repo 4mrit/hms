@@ -17,7 +17,7 @@ public class DatabaseTenantService{
     }
 
     public IEnumerable<HospitalTenant> GetAllTenants(){
-        IEnumerable<HospitalTenant> tenants = null;
+        IEnumerable<HospitalTenant> tenants? = null;
         tenants = _context.Tenants
             .Include(t => t.Scheme)
             .Include(t => t.Features)
