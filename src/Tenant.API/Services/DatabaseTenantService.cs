@@ -17,9 +17,11 @@ public class DatabaseTenantService{
     }
 
     public IEnumerable<HospitalTenant> GetAllTenants(){
-        IEnumerable<HospitalTenant> tenants = null;
+        IEnumerable<HospitalTenant> tenants = null!;
         tenants = _context.Tenants
             .Include(t => t.Scheme)
+            .Include(t => t.Scheme.PrimaryColor)
+            .Include(t => t.Scheme.SecondaryColor)
             .Include(t => t.Features)
             .Include(t => t.PrimaryDatabase)
             .Include(t => t.SecondaryDatabase)
