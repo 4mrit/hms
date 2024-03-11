@@ -7,7 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Pages\admin.razor" />
     <Content Remove="Components\Pages\Component.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\admin.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\admin.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Pages\Admin.razor" />
   </ItemGroup>
 
 </Project>
