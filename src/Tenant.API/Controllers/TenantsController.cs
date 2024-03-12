@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using hms.Tenant.API.Services;
 using hms.Tenant.API.Model;
+using hms.Tenant.API.Extensions;
 namespace hms.Tenant.API.Controllers;
 
 [Route("api/[controller]")]
@@ -31,7 +32,7 @@ public class TenantsController : ControllerBase
     HospitalTenant AddedTenant = TenantService.AddTenant(Tenant);
     return CreatedAtAction(
         actionName: nameof(GetTenant) ,
-        controllerName: "Tenants",
+        controllerName: ControllerContext.GetControllerName(),
         routeValues: new { id = AddedTenant.Id },
         value: AddedTenant
     );

@@ -1,9 +1,10 @@
-using hms.Tenant.API.Data;
-using hms.Tenant.API.Model;
-namespace hms.Tenant.API.Services;
-using hms.Media.API.Model;
 using Bogus;
 using Microsoft.EntityFrameworkCore;
+using hms.Tenant.API.Data;
+using hms.Tenant.API.Model;
+using hms.Media.API.Model;
+
+namespace hms.Tenant.API.Services;
 
 using System.Collections.ObjectModel;
 
