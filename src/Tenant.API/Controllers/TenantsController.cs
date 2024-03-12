@@ -15,7 +15,7 @@ public class TenantsController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<HospitalTenant> Get(){
+    public IEnumerable<HospitalTenant> GetAllTenants(){
         return TenantService.GetAllTenants();
     }
 
