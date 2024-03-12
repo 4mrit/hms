@@ -1,4 +1,5 @@
 using Bogus;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using hms.Tenant.API.Data;
 using hms.Tenant.API.Model;
@@ -40,6 +41,12 @@ public class DatabaseTenantService{
       _context.Add(Tenant);
       _context.SaveChanges();
       return Tenant;
+    }
+
+    public HospitalTenant UpdateTenant(HospitalTenant tenant){
+      _context.Update(tenant);
+      _context.SaveChanges();
+      return tenant;
     }
 
     public void InsertDummyData(){

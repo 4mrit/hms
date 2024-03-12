@@ -26,6 +26,15 @@ public class TenantsController : ControllerBase
     return TenantService.GetTenant(id);
   }
 
+  [HttpPut]
+  public async Task<ActionResult<HospitalTenant>> UpdateTenant(HospitalTenant Tenant)
+  {
+    if (TenantService.UpdateTenant(Tenant) == null){
+      return NotFound();
+    }
+    return NoContent();
+  }
+
   [HttpPost]
   public async Task<ActionResult<HospitalTenant>> AddTenant(HospitalTenant Tenant)
   {
