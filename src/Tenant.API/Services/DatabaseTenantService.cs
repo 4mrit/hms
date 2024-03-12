@@ -34,6 +34,13 @@ public class DatabaseTenantService{
       tenant = _context.Tenants.Find(id);
       return tenant;
     }
+
+    public HospitalTenant AddTenant(HospitalTenant Tenant){
+      _context.Add(Tenant);
+      _context.SaveChanges();
+      return Tenant;
+    }
+
     public void InsertDummyData(){
 
         Console.WriteLine("Adding DummyData");

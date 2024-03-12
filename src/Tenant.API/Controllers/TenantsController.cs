@@ -28,13 +28,12 @@ public class TenantsController : ControllerBase
   [HttpPost]
   public async Task<ActionResult<HospitalTenant>> AddTenant(HospitalTenant Tenant)
   {
-    var createdResource = new { Id = 1 };
-    var actionName = nameof(GetTenant);
-    var routeValues = new { id = createdResource.Id };
+    HospitalTenant AddedTenant = TenantService.AddTenant(Tenant);
     return CreatedAtAction(
-        actionName,
-        createdResource,
-        routeValues
+        actionName: nameof(GetTenant) ,
+        controllerName: "Tenants",
+        routeValues: new { id = AddedTenant.Id },
+        value: AddedTenant
     );
   }
 
