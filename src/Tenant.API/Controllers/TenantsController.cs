@@ -18,6 +18,11 @@ public class TenantsController : ControllerBase
     public IEnumerable<HospitalTenant> GetAllTenants(){
         return TenantService.GetAllTenants();
     }
+    
+    [HttpGet("{id}")]
+    public async Task<ActionResult<HospitalTenant>> GetTenant(int id){
+      return TenantService.GetTenant(id);
+    }
 
     [Route("AddDummyData")]
     [HttpGet]

@@ -28,6 +28,12 @@ public class DatabaseTenantService{
             .ToList();
         return tenants;
     }
+
+    public HospitalTenant GetTenant(int id){
+      HospitalTenant tenant = null!;
+      tenant = _context.Tenants.Find(id);
+      return tenant;
+    }
     public void InsertDummyData(){
 
         Console.WriteLine("Adding DummyData");
