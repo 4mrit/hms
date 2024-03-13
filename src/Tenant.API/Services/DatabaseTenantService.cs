@@ -48,6 +48,12 @@ public class DatabaseTenantService{
       _context.SaveChanges();
       return tenant;
     }
+    
+    public HospitalTenant DeleteTenant(HospitalTenant Tenant){
+      _context.Remove(Tenant);
+      _context.SaveChanges();
+      return Tenant;
+    }
 
     public void InsertDummyData(){
 
@@ -83,7 +89,6 @@ public class DatabaseTenantService{
                     HexValue = faker.Random.Hexadecimal(length: 6)
                 }
             }
-
         };
         _context.Add(tenant);
         _context.SaveChanges();

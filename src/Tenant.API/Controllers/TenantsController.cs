@@ -47,6 +47,12 @@ public class TenantsController : ControllerBase
     );
   }
 
+  [HttpDelete]
+  public async Task<ActionResult> DeleteTenant(HospitalTenant Tenant){
+    TenantService.DeleteTenant(Tenant);
+    return Ok();
+  }
+
   [Route("AddDummyData")]
   [HttpGet]
   public ActionResult SetDummyData()
