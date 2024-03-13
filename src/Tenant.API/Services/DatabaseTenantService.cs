@@ -1,9 +1,11 @@
+using Bogus;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using hms.Tenant.API.Data;
 using hms.Tenant.API.Model;
-namespace hms.Tenant.API.Services;
 using hms.Media.API.Model;
-using Bogus;
-using Microsoft.EntityFrameworkCore;
+
+namespace hms.Tenant.API.Services;
 
 using System.Collections.ObjectModel;
 
@@ -28,6 +30,31 @@ public class DatabaseTenantService{
             .ToList();
         return tenants;
     }
+
+    public HospitalTenant GetTenant(int id){
+      HospitalTenant tenant = null!;
+      tenant = _context.Tenants.Find(id);
+      return tenant;
+    }
+
+    public HospitalTenant AddTenant(HospitalTenant Tenant){
+      _context.Add(Tenant);
+      _context.SaveChanges();
+      return Tenant;
+    }
+
+    public HospitalTenant UpdateTenant(HospitalTenant tenant){
+      _context.Update(tenant);
+      _context.SaveChanges();
+      return tenant;
+    }
+    
+    public HospitalTenant DeleteTenant(HospitalTenant Tenant){
+      _context.Remove(Tenant);
+      _context.SaveChanges();
+      return Tenant;
+    }
+
     public void InsertDummyData(){
 
         Console.WriteLine("Adding DummyData");
@@ -62,7 +89,6 @@ public class DatabaseTenantService{
                     HexValue = faker.Random.Hexadecimal(length: 6)
                 }
             }
-
         };
         _context.Add(tenant);
         _context.SaveChanges();

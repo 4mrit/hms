@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using hms.Media.API.Model;
 namespace hms.Tenant.API.Model;
 
 public class TenantDatabase{

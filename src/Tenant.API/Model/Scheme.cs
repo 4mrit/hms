@@ -8,9 +8,9 @@ public class Scheme{
     public int Id { get; set;}
 
     [Column("primary_color")]
-    public Color PrimaryColor { get; set; } = null!;
+    public virtual Color PrimaryColor { get; set; } = null!;
 
     [Column("secondary_color")]
-    public Color SecondaryColor { get; set; } = null!;
+    public virtual Color SecondaryColor { get; set; } = null!;
 
 }
