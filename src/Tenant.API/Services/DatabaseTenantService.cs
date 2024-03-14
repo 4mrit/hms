@@ -58,10 +58,12 @@ public class DatabaseTenantService{
       return tenant;
     }
     
-    public HospitalTenant DeleteTenant(HospitalTenant Tenant){
-      _context.Remove(Tenant);
+    public HospitalTenant DeleteTenant(int TenantId){
+      HospitalTenant DbTenant = null;
+      DbTenant = GetTenant(TenantId);
+      _context.Remove(DbTenant);
       _context.SaveChanges();
-      return Tenant;
+      return DbTenant;
     }
 
     public void InsertDummyData(){
