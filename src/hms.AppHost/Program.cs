@@ -29,10 +29,11 @@ var MediaApi = builder.AddProject<Projects.Media_API>("media-api")
     .WithLaunchProfile("https");
 
 var TenantApi = builder.AddProject<Projects.Tenant_API>("tenant-api")
-    // .WithReference(tenantDb)
+     //.WithReference(TenantDB)
     .WithLaunchProfile("https");
 
 var WebApp = builder.AddProject<Projects.WebApp>("WebApp")
+    .WithReference(TenantApi)
     .WithLaunchProfile("https");
 
 identityApi.WithReference(MediaApi);

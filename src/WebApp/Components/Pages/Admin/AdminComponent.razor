@@ -1,0 +1,64 @@
+﻿@page "/admin/tenants"
+@rendermode InteractiveServer
+@using hms.Tenant.API.Model;
+@inject IHttpClientFactory ClientFactory
+@using System.Net.Http.Json
+
+
+<PageTitle> Admin Panel</PageTitle>
+
+
+
+<h1>Hospital</h1>
+
+
+
+@if (Tenants == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">URL</th>
+                <th scope="col">Address</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var data in Tenants)
+                {
+                <tr>
+                    <td>@data.Id</td>
+                    <td>@data.Name</td>
+                    <td>
+                        <a href="http://www.@data.Url">
+
+                        http://www.@data.Url
+                    </a>
+                        </td>
+                    <td>@data.Address</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+}
+
+@code {
+    private HospitalTenant[] Tenants;
+
+    private const string RequestUri = "api/Tenants";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = ClientFactory.CreateClient("MyHttpClient");
+
+        Tenants = await client.GetFromJsonAsync<HospitalTenant[]>(RequestUri);
+        
+    }
+
+}
