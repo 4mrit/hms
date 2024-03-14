@@ -27,6 +27,7 @@ public class DatabaseTenantService{
             .Include(t => t.Features)
             .Include(t => t.PrimaryDatabase)
             .Include(t => t.SecondaryDatabase)
+            .AsNoTracking()
             .ToList();
         return tenants;
     }
