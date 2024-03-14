@@ -20,10 +20,10 @@ public class TenantsController : ControllerBase
     return TenantService.GetAllTenants();
   }
 
-  [HttpGet("{id}")]
-  public async Task<ActionResult<HospitalTenant>> GetTenant(int id)
+  [HttpGet("{TenantId}")]
+  public async Task<ActionResult<HospitalTenant>> GetTenant(int TenantId)
   {
-    return TenantService.GetTenant(id);
+    return TenantService.GetTenant(TenantId);
   }
 
   [HttpPut]
@@ -47,10 +47,10 @@ public class TenantsController : ControllerBase
     );
   }
 
-  [HttpDelete]
-  public async Task<ActionResult> DeleteTenant(HospitalTenant Tenant){
-    TenantService.DeleteTenant(Tenant);
-    return Ok();
+  [HttpDelete("{TenantId}")]
+  public async Task<ActionResult> DeleteTenant(int TenantId){
+    TenantService.DeleteTenant(TenantId);
+    return NoContent();
   }
 
   [Route("AddDummyData")]

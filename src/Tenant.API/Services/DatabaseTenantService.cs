@@ -27,13 +27,22 @@ public class DatabaseTenantService{
             .Include(t => t.Features)
             .Include(t => t.PrimaryDatabase)
             .Include(t => t.SecondaryDatabase)
+            .AsNoTracking()
             .ToList();
         return tenants;
     }
 
-    public HospitalTenant GetTenant(int id){
+    public HospitalTenant GetTenant(int TenantId){
       HospitalTenant tenant = null!;
-      tenant = _context.Tenants.Find(id);
+      tenant = _context.Tenants
+            .Include(t => t.Scheme)
+            .Include(t => t.Scheme.PrimaryColor)
+            .Include(t => t.Scheme.SecondaryColor)
+            .Include(t => t.Features)
+            .Include(t => t.PrimaryDatabase)
+            .Include(t => t.SecondaryDatabase)
+            .AsNoTracking()
+            .FirstOrDefault(t => t.Id == TenantId);
       return tenant;
     }
 
@@ -49,10 +58,12 @@ public class DatabaseTenantService{
       return tenant;
     }
     
-    public HospitalTenant DeleteTenant(HospitalTenant Tenant){
-      _context.Remove(Tenant);
+    public HospitalTenant DeleteTenant(int TenantId){
+      HospitalTenant DbTenant = null;
+      DbTenant = GetTenant(TenantId);
+      _context.Remove(DbTenant);
       _context.SaveChanges();
-      return Tenant;
+      return DbTenant;
     }
 
     public void InsertDummyData(){
