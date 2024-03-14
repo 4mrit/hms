@@ -32,9 +32,17 @@ public class DatabaseTenantService{
         return tenants;
     }
 
-    public HospitalTenant GetTenant(int id){
+    public HospitalTenant GetTenant(int TenantId){
       HospitalTenant tenant = null!;
-      tenant = _context.Tenants.Find(id);
+      tenant = _context.Tenants
+            .Include(t => t.Scheme)
+            .Include(t => t.Scheme.PrimaryColor)
+            .Include(t => t.Scheme.SecondaryColor)
+            .Include(t => t.Features)
+            .Include(t => t.PrimaryDatabase)
+            .Include(t => t.SecondaryDatabase)
+            .AsNoTracking()
+            .FirstOrDefault(t => t.Id == TenantId);
       return tenant;
     }
 
