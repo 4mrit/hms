@@ -1,10 +1,19 @@
 ﻿body {
 }
 
-table{
-    padding:20px;
+table {
+    border-collapse: separate;
+    border-spacing: 0 1em; /* Adjust the spacing as needed */
 }
 
 tr{
-    padding:20px;
+
+    
 }
+.data-table-row{
+    height:30px;
+}
+
+    .data-table-row:hover {
+        background-color: rgb(238 238 238 / 0.48);
+    }

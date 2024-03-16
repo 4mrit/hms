@@ -1,0 +1,84 @@
+﻿@page "/admin/tenants/{id:int}"
+@using hms.Tenant.API.Model;
+@inject IHttpClientFactory ClientFactory
+@* @inject HttpClient httpClient *@
+
+
+@using System.Net.Http.Json
+
+
+
+
+<h1>Component Details</h1>
+<p>ID: @id</p>
+
+@* @foreach(var data in Tenants) *@
+@* { *@
+
+
+     <p>
+         @content
+     </p>
+@* } *@
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    // private string RequestUri;
+
+    // public UserDetail()
+    // {
+    //     RequestUri = $"api/Tenants/{id}";
+    // }
+
+    // private HospitalTenant[] User;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var client = ClientFactory.CreateClient("MyHttpClient");
+
+    //     User = await client.GetFromJsonAsync<HospitalTenant[]>(RequestUri);
+
+    // }
+
+    // private object apiResponse;
+    private string content;
+
+
+    
+
+    [Inject]
+    private IHttpClientFactory _httpClientFactory { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            string RequestUri = $"/api/Tenants/{id}";
+
+            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            // Example: Make an HTTP request to an endpoint using the base address
+            var apiResponse = await httpClient.GetAsync(RequestUri);
+            content = await apiResponse.Content.ReadAsStringAsync();
+            Console.WriteLine(content);
+            Console.WriteLine("hello");
+
+        }
+        catch (HttpRequestException ex)
+        {
+            // Handle exceptions (e.g., network errors)
+            var response = $"Error: {ex.Message}";
+        }
+    }
+}
+
+
+
+<h3>UserDetail</h3>
+
+@code {
+
+}
