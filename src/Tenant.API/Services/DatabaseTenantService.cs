@@ -19,54 +19,55 @@ public class DatabaseTenantService {
     this._context = context;
   }
 
-  public IEnumerable<HospitalTenant> GetAllTenants() {
+  public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
     IEnumerable<HospitalTenant> tenants = null!;
-    tenants = _context.Tenants.Include(t => t.Scheme)
+    tenants = await _context.Tenants.Include(t => t.Scheme)
                   .Include(t => t.Scheme.PrimaryColor)
                   .Include(t => t.Scheme.SecondaryColor)
                   .Include(t => t.Features)
                   .Include(t => t.PrimaryDatabase)
                   .Include(t => t.SecondaryDatabase)
                   .AsNoTracking()
-                  .ToList();
+                  .ToListAsync();
     return tenants;
   }
 
-  public HospitalTenant GetTenant(int TenantId) {
+  public async Task<HospitalTenant> GetTenant(int TenantId) {
     HospitalTenant tenant = null!;
-    tenant = _context.Tenants.Include(t => t.Scheme)
+    tenant = await _context.Tenants.Include(t => t.Scheme)
                  .Include(t => t.Scheme.PrimaryColor)
                  .Include(t => t.Scheme.SecondaryColor)
                  .Include(t => t.Features)
                  .Include(t => t.PrimaryDatabase)
                  .Include(t => t.SecondaryDatabase)
                  .AsNoTracking()
-                 .FirstOrDefault(t => t.Id == TenantId);
+                 .FirstOrDefaultAsync(t => t.Id == TenantId);
     return tenant;
   }
 
-  public IEnumerable<Feature> GetFeatures() {
+  public async Task<IEnumerable<Feature>> GetFeatures() {
     IEnumerable<Feature> features;
-    features = _context.Features.AsNoTracking().ToList();
+    features = await _context.Features.AsNoTracking().ToListAsync();
     return features;
   }
-  public HospitalTenant AddTenant(HospitalTenant Tenant) {
-    _context.Add(Tenant);
-    _context.SaveChanges();
+
+  public async Task<HospitalTenant> AddTenant(HospitalTenant Tenant) {
+    await _context.AddAsync(Tenant);
+    await _context.SaveChangesAsync();
     return Tenant;
   }
 
-  public HospitalTenant UpdateTenant(HospitalTenant tenant) {
+  public async Task<HospitalTenant> UpdateTenant(HospitalTenant tenant) {
     _context.Update(tenant);
-    _context.SaveChanges();
+    await _context.SaveChangesAsync();
     return tenant;
   }
 
-  public HospitalTenant DeleteTenant(int TenantId) {
-    HospitalTenant DbTenant = null;
-    DbTenant = GetTenant(TenantId);
+  public async Task<HospitalTenant> DeleteTenant(int TenantId) {
+    HospitalTenant DbTenant;
+    DbTenant = await GetTenant(TenantId);
     _context.Remove(DbTenant);
-    _context.SaveChanges();
+    await _context.SaveChangesAsync();
     return DbTenant;
   }
 

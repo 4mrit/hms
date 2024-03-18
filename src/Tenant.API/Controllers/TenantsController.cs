@@ -13,7 +13,7 @@ public class TenantsController : ControllerBase {
   }
 
   [HttpGet]
-  public IEnumerable<HospitalTenant> GetAllTenants() {
+  public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
     return TenantService.GetAllTenants();
   }
 
@@ -23,7 +23,7 @@ public class TenantsController : ControllerBase {
   }
 
   [HttpGet("Features")]
-  public IEnumerable<Feature> GetFeatures() {
+  public async Task<IEnumerable<Feature>> GetFeatures() {
     return TenantService.GetFeatures();
   }
 
