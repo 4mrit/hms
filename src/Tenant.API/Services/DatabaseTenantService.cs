@@ -1,5 +1,4 @@
 using Bogus;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using hms.Tenant.API.Data;
 using hms.Tenant.API.Model;
@@ -22,21 +21,22 @@ public class DatabaseTenantService {
   public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
     IEnumerable<HospitalTenant> tenants = null!;
     tenants = await _context.Tenants.Include(t => t.Scheme)
-                  .Include(t => t.Scheme.PrimaryColor)
-                  .Include(t => t.Scheme.SecondaryColor)
+                  .Include(t => t.Scheme!.PrimaryColor)
+                  .Include(t => t.Scheme!.SecondaryColor)
                   .Include(t => t.Features)
                   .Include(t => t.PrimaryDatabase)
                   .Include(t => t.SecondaryDatabase)
                   .AsNoTracking()
                   .ToListAsync();
+
     return tenants;
   }
 
   public async Task<HospitalTenant> GetTenant(int TenantId) {
     HospitalTenant tenant = null!;
     tenant = await _context.Tenants.Include(t => t.Scheme)
-                 .Include(t => t.Scheme.PrimaryColor)
-                 .Include(t => t.Scheme.SecondaryColor)
+                 .Include(t => t.Scheme!.PrimaryColor)
+                 .Include(t => t.Scheme!.SecondaryColor)
                  .Include(t => t.Features)
                  .Include(t => t.PrimaryDatabase)
                  .Include(t => t.SecondaryDatabase)
@@ -67,6 +67,9 @@ public class DatabaseTenantService {
     HospitalTenant DbTenant;
     DbTenant = await GetTenant(TenantId);
     _context.Remove(DbTenant);
+
+    _context.ChangeTracker.DetectChanges();
+    Console.WriteLine(_context.ChangeTracker.DebugView.LongView);
     await _context.SaveChangesAsync();
     return DbTenant;
   }
