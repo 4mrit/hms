@@ -9,102 +9,100 @@ namespace hms.Tenant.API.Services;
 
 using System.Collections.ObjectModel;
 
-public class DatabaseTenantService{
-    public IWebHostEnvironment WebHostEnvironment { get;}
-    private readonly TenantContext _context;
+public class DatabaseTenantService {
+  public IWebHostEnvironment WebHostEnvironment { get; }
+  private readonly TenantContext _context;
 
-    public DatabaseTenantService(IWebHostEnvironment webHostEnvironment, TenantContext context ){
-        this.WebHostEnvironment = webHostEnvironment;
-        this._context = context;
-    }
+  public DatabaseTenantService(IWebHostEnvironment webHostEnvironment,
+                               TenantContext context) {
+    this.WebHostEnvironment = webHostEnvironment;
+    this._context = context;
+  }
 
-    public IEnumerable<HospitalTenant> GetAllTenants(){
-        IEnumerable<HospitalTenant> tenants = null!;
-        tenants = _context.Tenants
-            .Include(t => t.Scheme)
-            .Include(t => t.Scheme.PrimaryColor)
-            .Include(t => t.Scheme.SecondaryColor)
-            .Include(t => t.Features)
-            .Include(t => t.PrimaryDatabase)
-            .Include(t => t.SecondaryDatabase)
-            .AsNoTracking()
-            .ToList();
-        return tenants;
-    }
+  public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
+    IEnumerable<HospitalTenant> tenants = null!;
+    tenants = await _context.Tenants.Include(t => t.Scheme)
+                  .Include(t => t.Scheme.PrimaryColor)
+                  .Include(t => t.Scheme.SecondaryColor)
+                  .Include(t => t.Features)
+                  .Include(t => t.PrimaryDatabase)
+                  .Include(t => t.SecondaryDatabase)
+                  .AsNoTracking()
+                  .ToListAsync();
+    return tenants;
+  }
 
-    public HospitalTenant GetTenant(int TenantId){
-      HospitalTenant tenant = null!;
-      tenant = _context.Tenants
-            .Include(t => t.Scheme)
-            .Include(t => t.Scheme.PrimaryColor)
-            .Include(t => t.Scheme.SecondaryColor)
-            .Include(t => t.Features)
-            .Include(t => t.PrimaryDatabase)
-            .Include(t => t.SecondaryDatabase)
-            .AsNoTracking()
-            .FirstOrDefault(t => t.Id == TenantId);
-      return tenant;
-    }
+  public async Task<HospitalTenant> GetTenant(int TenantId) {
+    HospitalTenant tenant = null!;
+    tenant = await _context.Tenants.Include(t => t.Scheme)
+                 .Include(t => t.Scheme.PrimaryColor)
+                 .Include(t => t.Scheme.SecondaryColor)
+                 .Include(t => t.Features)
+                 .Include(t => t.PrimaryDatabase)
+                 .Include(t => t.SecondaryDatabase)
+                 .AsNoTracking()
+                 .FirstOrDefaultAsync(t => t.Id == TenantId);
+    return tenant;
+  }
 
-    public HospitalTenant AddTenant(HospitalTenant Tenant){
-      _context.Add(Tenant);
-      _context.SaveChanges();
-      return Tenant;
-    }
+  public async Task<IEnumerable<Feature>> GetFeatures() {
+    IEnumerable<Feature> features;
+    features = await _context.Features.AsNoTracking().ToListAsync();
+    return features;
+  }
 
-    public HospitalTenant UpdateTenant(HospitalTenant tenant){
-      _context.Update(tenant);
-      _context.SaveChanges();
-      return tenant;
-    }
-    
-    public HospitalTenant DeleteTenant(int TenantId){
-      HospitalTenant DbTenant = null;
-      DbTenant = GetTenant(TenantId);
-      _context.Remove(DbTenant);
-      _context.SaveChanges();
-      return DbTenant;
-    }
+  public async Task<HospitalTenant> AddTenant(HospitalTenant Tenant) {
+    await _context.AddAsync(Tenant);
+    await _context.SaveChangesAsync();
+    return Tenant;
+  }
 
-    public void InsertDummyData(){
+  public async Task<HospitalTenant> UpdateTenant(HospitalTenant tenant) {
+    _context.Update(tenant);
+    await _context.SaveChangesAsync();
+    return tenant;
+  }
 
-        Console.WriteLine("Adding DummyData");
-        var faker = new Faker();
+  public async Task<HospitalTenant> DeleteTenant(int TenantId) {
+    HospitalTenant DbTenant;
+    DbTenant = await GetTenant(TenantId);
+    _context.Remove(DbTenant);
+    await _context.SaveChangesAsync();
+    return DbTenant;
+  }
 
-        HospitalTenant tenant = new HospitalTenant{
-            
-            Address = faker.Address.StreetAddress()
-            , Name = faker.Name.FullName()
-            , Url = faker.Internet.DomainName()
-            , PrimaryDatabase = new TenantDatabase()
-            {
-                ConnectionString = faker.Internet.Url()
-            }
-            , SecondaryDatabase =new TenantDatabase() {
-                ConnectionString = faker.Internet.Url()
-            }
-            , MediaRootPath = faker.System.FilePath()
-            , Features = new Collection<Feature>(){
-                new Feature(){
-                    Name = faker.Internet.UserName()
-                },
-                new Feature(){
-                    Name = faker.Internet.UserName()
-                }
-            }
-            , Scheme = new Scheme(){
-                PrimaryColor = new Color{
-                    HexValue = faker.Random.Hexadecimal(length: 6)
-                },
-                SecondaryColor = new Color{
-                    HexValue = faker.Random.Hexadecimal(length: 6)
-                }
-            }
-        };
-        _context.Add(tenant);
-        _context.SaveChanges();
-        Console.WriteLine("Added DummyData");
-    }
+  public void InsertDummyData() {
+
+    Console.WriteLine("Adding DummyData");
+    var faker = new Faker();
+
+    HospitalTenant tenant = new HospitalTenant {
+
+      Address = faker.Address.StreetAddress(),
+      Name = faker.Name.FullName(),
+      Url = faker.Internet.DomainName(),
+      PrimaryDatabase =
+          new TenantDatabase() { ConnectionString = faker.Internet.Url() },
+      SecondaryDatabase =
+          new TenantDatabase() { ConnectionString = faker.Internet.Url() },
+      MediaRootPath = faker.System.FilePath(),
+      Features =
+          new Collection<Feature>() {
+            new Feature() { Name = faker.Internet.UserName() },
+            new Feature() { Name = faker.Internet.UserName() }
+          },
+      Scheme =
+          new Scheme() {
+            PrimaryColor =
+                new Color { HexValue = faker.Random.Hexadecimal(length: 6) },
+            SecondaryColor =
+                new Color { HexValue = faker.Random.Hexadecimal(length: 6) }
+          }
+    };
+    _context.Add(tenant);
+    _context.SaveChanges();
+    Console.WriteLine("Added DummyData");
+  }
 }
 
 // ----- fluent API ------------------//
