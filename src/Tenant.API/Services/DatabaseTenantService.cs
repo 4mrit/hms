@@ -9,20 +9,17 @@ namespace hms.Tenant.API.Services;
 
 using System.Collections.ObjectModel;
 
-public class DatabaseTenantService
-{
+public class DatabaseTenantService {
   public IWebHostEnvironment WebHostEnvironment { get; }
   private readonly TenantContext _context;
 
   public DatabaseTenantService(IWebHostEnvironment webHostEnvironment,
-                               TenantContext context)
-  {
+                               TenantContext context) {
     this.WebHostEnvironment = webHostEnvironment;
     this._context = context;
   }
 
-  public IEnumerable<HospitalTenant> GetAllTenants()
-  {
+  public IEnumerable<HospitalTenant> GetAllTenants() {
     IEnumerable<HospitalTenant> tenants = null!;
     tenants = _context.Tenants.Include(t => t.Scheme)
                   .Include(t => t.Scheme.PrimaryColor)
@@ -35,8 +32,7 @@ public class DatabaseTenantService
     return tenants;
   }
 
-  public HospitalTenant GetTenant(int TenantId)
-  {
+  public HospitalTenant GetTenant(int TenantId) {
     HospitalTenant tenant = null!;
     tenant = _context.Tenants.Include(t => t.Scheme)
                  .Include(t => t.Scheme.PrimaryColor)
@@ -49,22 +45,24 @@ public class DatabaseTenantService
     return tenant;
   }
 
-  public HospitalTenant AddTenant(HospitalTenant Tenant)
-  {
+  public IEnumerable<Feature> GetFeatures() {
+    IEnumerable<Feature> features;
+    features = _context.Features.AsNoTracking().ToList();
+    return features;
+  }
+  public HospitalTenant AddTenant(HospitalTenant Tenant) {
     _context.Add(Tenant);
     _context.SaveChanges();
     return Tenant;
   }
 
-  public HospitalTenant UpdateTenant(HospitalTenant tenant)
-  {
+  public HospitalTenant UpdateTenant(HospitalTenant tenant) {
     _context.Update(tenant);
     _context.SaveChanges();
     return tenant;
   }
 
-  public HospitalTenant DeleteTenant(int TenantId)
-  {
+  public HospitalTenant DeleteTenant(int TenantId) {
     HospitalTenant DbTenant = null;
     DbTenant = GetTenant(TenantId);
     _context.Remove(DbTenant);
@@ -72,14 +70,12 @@ public class DatabaseTenantService
     return DbTenant;
   }
 
-  public void InsertDummyData()
-  {
+  public void InsertDummyData() {
 
     Console.WriteLine("Adding DummyData");
     var faker = new Faker();
 
-    HospitalTenant tenant = new HospitalTenant
-    {
+    HospitalTenant tenant = new HospitalTenant {
 
       Address = faker.Address.StreetAddress(),
       Name = faker.Name.FullName(),
@@ -95,8 +91,7 @@ public class DatabaseTenantService
             new Feature() { Name = faker.Internet.UserName() }
           },
       Scheme =
-          new Scheme()
-          {
+          new Scheme() {
             PrimaryColor =
                 new Color { HexValue = faker.Random.Hexadecimal(length: 6) },
             SecondaryColor =

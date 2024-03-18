@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <AspireVersion>8.0.0-preview.2.23619.3</AspireVersion>
-    <EntityFrameworkCoreVersion>8.0.0</EntityFrameworkCoreVersion>
+    <EntityFrameworkCoreVersion>8.0.1</EntityFrameworkCoreVersion>
 
   </PropertyGroup>
   <ItemGroup>
