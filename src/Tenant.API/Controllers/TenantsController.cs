@@ -14,23 +14,23 @@ public class TenantsController : ControllerBase {
 
   [HttpGet]
   public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
-    return TenantService.GetAllTenants();
+    return await TenantService.GetAllTenants();
   }
 
   [HttpGet("{TenantId}")]
   public async Task<ActionResult<HospitalTenant>> GetTenant(int TenantId) {
-    return TenantService.GetTenant(TenantId);
+    return await TenantService.GetTenant(TenantId);
   }
 
   [HttpGet("Features")]
   public async Task<IEnumerable<Feature>> GetFeatures() {
-    return TenantService.GetFeatures();
+    return await TenantService.GetFeatures();
   }
 
   [HttpPut]
   public async Task<ActionResult<HospitalTenant>>
   UpdateTenant(HospitalTenant Tenant) {
-    if (TenantService.UpdateTenant(Tenant) == null) {
+    if (await TenantService.UpdateTenant(Tenant) == null) {
       return NotFound();
     }
     return NoContent();
@@ -39,7 +39,7 @@ public class TenantsController : ControllerBase {
   [HttpPost]
   public async Task<ActionResult<HospitalTenant>>
   AddTenant(HospitalTenant Tenant) {
-    HospitalTenant AddedTenant = TenantService.AddTenant(Tenant);
+    HospitalTenant AddedTenant = await TenantService.AddTenant(Tenant);
     return CreatedAtAction(
         actionName: nameof(GetTenant),
         controllerName: ControllerContext.GetControllerName(),
@@ -48,7 +48,7 @@ public class TenantsController : ControllerBase {
 
   [HttpDelete("{TenantId}")]
   public async Task<ActionResult> DeleteTenant(int TenantId) {
-    TenantService.DeleteTenant(TenantId);
+    await TenantService.DeleteTenant(TenantId);
     return NoContent();
   }
 
