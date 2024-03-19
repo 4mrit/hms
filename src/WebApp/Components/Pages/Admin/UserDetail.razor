@@ -3,12 +3,13 @@
 @using System.Text.Json
 @using hms.Tenant.API.Model;
 @inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
 
 
-<h1>Component Details</h1>
-<p>ID: @id</p>
+<h3>UserDetail</h3>
+<br />
 
-     <p>
+<p>
     @if(tenants == null)
     {
         <p><em>loading...</em></p>
@@ -16,14 +17,67 @@
     } 
     else
     { 
-        <p>id:@tenants.Id
-        </p> 
+        <div>
+            
+            <p>
 
-        @tenants.Name
+            Name:     @tenants.Name
+            </p>
+
+            <p>
+
+            Address:  @tenants.Address
+            </p>
+
+            <p>
+
+            URL:     <a href="http://www.@tenants.Url">
+
+            http://www.@tenants.Url
+            </a>
+            </p>
+
+            <p>
+
+            PrimaryColor: @tenants.Scheme.PrimaryColor.HexValue
+            </p>
+
+            <p>
+
+            SecondaryColor: @tenants.Scheme.SecondaryColor.HexValue
+            </p>
+
+            <p>
+
+            Features:  
+                @foreach(var data in tenants.Features)
+                {
+                    @data.Name;
+                    <span>, </span>
+                    
+                }
+            </p>
+
+
+            <button 
+                
+                class="btn btn-primary"
+                @onclick="EditButton">
+                Edit
+            </button>
+
+            <button 
+                type="button" 
+                class="btn btn-danger"
+                @onclick="DeleteButton">
+                Delete
+            </button>
+
+        </div>
 
        
             
-         }
+    }
     
 </p>
 
@@ -32,6 +86,7 @@
     [Parameter] public int id { get; set; }
 
     private HospitalTenant tenants;
+
 
     [Inject]
     private IHttpClientFactory _httpClientFactory { get; set; }
@@ -46,9 +101,10 @@
             // Request an GET api
             var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
             tenants = await httpClient.GetFromJsonAsync<HospitalTenant>(requestUri);
+            Console.WriteLine("hello");
 
-            
-           
+
+
         }
         catch (HttpRequestException ex)
         {
@@ -56,9 +112,19 @@
             Console.WriteLine($"Error: {ex.Message}");
         }
     }
+
+    private void EditButton()
+    {
+        Console.WriteLine("Edit button");
+    }
+
+    private void DeleteButton()
+    {
+        Console.WriteLine("Delete button");
+
+    }
 }
 
 
 
-<h3>UserDetail</h3>
 
