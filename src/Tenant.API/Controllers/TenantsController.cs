@@ -18,13 +18,13 @@ public class TenantsController : ControllerBase {
   }
 
   [HttpGet("{TenantId}")]
-  public async Task<ActionResult<HospitalTenant>> GetTenant(int TenantId) {
-    return await TenantService.GetTenant(TenantId);
+  public async Task<ActionResult<HospitalTenant>> GetTenantByID(int TenantId) {
+    return await TenantService.GetTenantById(TenantId);
   }
 
   [HttpGet("Features")]
-  public async Task<IEnumerable<Feature>> GetFeatures() {
-    return await TenantService.GetFeatures();
+  public async Task<IEnumerable<Feature>> GetAllFeatures() {
+    return await TenantService.GetAllFeatures();
   }
 
   [HttpPut]
@@ -41,7 +41,7 @@ public class TenantsController : ControllerBase {
   AddTenant(HospitalTenant Tenant) {
     HospitalTenant AddedTenant = await TenantService.AddTenant(Tenant);
     return CreatedAtAction(
-        actionName: nameof(GetTenant),
+        actionName: nameof(GetTenantByID),
         controllerName: ControllerContext.GetControllerName(),
         routeValues: new { id = AddedTenant.Id }, value: AddedTenant);
   }

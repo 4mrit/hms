@@ -32,7 +32,7 @@ public class DatabaseTenantService {
     return tenants;
   }
 
-  public async Task<HospitalTenant> GetTenant(int TenantId) {
+  public async Task<HospitalTenant> GetTenantById(int TenantId) {
     HospitalTenant tenant = null!;
     tenant = await _context.Tenants.Include(t => t.Scheme)
                  .Include(t => t.Scheme!.PrimaryColor)
@@ -45,7 +45,7 @@ public class DatabaseTenantService {
     return tenant;
   }
 
-  public async Task<IEnumerable<Feature>> GetFeatures() {
+  public async Task<IEnumerable<Feature>> GetAllFeatures() {
     IEnumerable<Feature> features;
     features = await _context.Features.AsNoTracking().ToListAsync();
     return features;
@@ -65,7 +65,7 @@ public class DatabaseTenantService {
 
   public async Task<HospitalTenant> DeleteTenant(int TenantId) {
     HospitalTenant DbTenant;
-    DbTenant = await GetTenant(TenantId);
+    DbTenant = await GetTenantById(TenantId);
     _context.Remove(DbTenant);
 
     _context.ChangeTracker.DetectChanges();
