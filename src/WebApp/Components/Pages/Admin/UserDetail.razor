@@ -1,0 +1,130 @@
+﻿@page "/admin/tenants/{id:int}"
+@using System.Net.Http.Json
+@using System.Text.Json
+@using hms.Tenant.API.Model;
+@inject IHttpClientFactory ClientFactory
+@rendermode InteractiveServer
+
+
+<h3>UserDetail</h3>
+<br />
+
+<p>
+    @if(tenants == null)
+    {
+        <p><em>loading...</em></p>
+
+    } 
+    else
+    { 
+        <div>
+            
+            <p>
+
+            Name:     @tenants.Name
+            </p>
+
+            <p>
+
+            Address:  @tenants.Address
+            </p>
+
+            <p>
+
+            URL:     <a href="http://www.@tenants.Url">
+
+            http://www.@tenants.Url
+            </a>
+            </p>
+
+            <p>
+
+            PrimaryColor: @tenants.Scheme.PrimaryColor.HexValue
+            </p>
+
+            <p>
+
+            SecondaryColor: @tenants.Scheme.SecondaryColor.HexValue
+            </p>
+
+            <p>
+
+            Features:  
+                @foreach(var data in tenants.Features)
+                {
+                    @data.Name;
+                    <span>, </span>
+                    
+                }
+            </p>
+
+
+            <button 
+                
+                class="btn btn-primary"
+                @onclick="EditButton">
+                Edit
+            </button>
+
+            <button 
+                type="button" 
+                class="btn btn-danger"
+                @onclick="DeleteButton">
+                Delete
+            </button>
+
+        </div>
+
+       
+            
+    }
+    
+</p>
+
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private HospitalTenant tenants;
+
+
+    [Inject]
+    private IHttpClientFactory _httpClientFactory { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // URL for api request
+            string requestUri = "/api/tenants/1";
+
+            // Request an GET api
+            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+            tenants = await httpClient.GetFromJsonAsync<HospitalTenant>(requestUri);
+            Console.WriteLine("hello");
+
+
+
+        }
+        catch (HttpRequestException ex)
+        {
+            // Handle exceptions (e.g., network errors)
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private void EditButton()
+    {
+        Console.WriteLine("Edit button");
+    }
+
+    private void DeleteButton()
+    {
+        Console.WriteLine("Delete button");
+
+    }
+}
+
+
+
+
