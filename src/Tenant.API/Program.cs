@@ -1,8 +1,5 @@
 using hms.Tenant.API.Services;
 using hms.Tenant.API.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
