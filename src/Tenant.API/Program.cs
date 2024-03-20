@@ -1,5 +1,9 @@
 using hms.Tenant.API.Services;
 using hms.Tenant.API.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using hms.Identity.API.Models;
+using hms.Identity.API.Data;
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
@@ -9,6 +13,10 @@ builder.AddServiceDefaults();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddIdentityCookies();
+builder.Services.AddAuthorizationBuilder();
 
 builder.AddMySqlDbContext<TenantContext>("tenantdb");
 builder.Services.AddTransient<DatabaseTenantService>();
@@ -25,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.MapDefaultEndpoints();
 app.Run();
