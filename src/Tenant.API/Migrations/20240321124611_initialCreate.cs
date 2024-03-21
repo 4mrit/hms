@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tenant.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,21 @@ namespace Tenant.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Colors", x => x.color_id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Features",
+                columns: table => new
+                {
+                    feature_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Features", x => x.feature_id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -128,29 +143,33 @@ namespace Tenant.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Features",
+                name: "FeatureHospitalTenant",
                 columns: table => new
                 {
-                    feature_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    HospitalTenantId = table.Column<int>(type: "int", nullable: true)
+                    FeaturesId = table.Column<int>(type: "int", nullable: false),
+                    HospitalTenantId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Features", x => x.feature_id);
+                    table.PrimaryKey("PK_FeatureHospitalTenant", x => new { x.FeaturesId, x.HospitalTenantId });
                     table.ForeignKey(
-                        name: "FK_Features_Tenants_HospitalTenantId",
+                        name: "FK_FeatureHospitalTenant_Features_FeaturesId",
+                        column: x => x.FeaturesId,
+                        principalTable: "Features",
+                        principalColumn: "feature_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FeatureHospitalTenant_Tenants_HospitalTenantId",
                         column: x => x.HospitalTenantId,
                         principalTable: "Tenants",
-                        principalColumn: "tenant_id");
+                        principalColumn: "tenant_id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Features_HospitalTenantId",
-                table: "Features",
+                name: "IX_FeatureHospitalTenant_HospitalTenantId",
+                table: "FeatureHospitalTenant",
                 column: "HospitalTenantId");
 
             migrationBuilder.CreateIndex(
@@ -183,10 +202,13 @@ namespace Tenant.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Features");
+                name: "FeatureHospitalTenant");
 
             migrationBuilder.DropTable(
                 name: "MediaFiles");
+
+            migrationBuilder.DropTable(
+                name: "Features");
 
             migrationBuilder.DropTable(
                 name: "Tenants");

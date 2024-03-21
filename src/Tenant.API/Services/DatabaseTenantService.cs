@@ -56,8 +56,9 @@ public class DatabaseTenantService {
     return Tenant;
   }
 
-  public async Task<HospitalTenant> UpdateTenant(HospitalTenant tenant) {
-    _context.Update(tenant);
+  public async Task<HospitalTenant> UpdateTenantUsingId(int id,
+                                                        HospitalTenant tenant) {
+    _context.Tenants.Update(tenant);
     await _context.SaveChangesAsync();
     return tenant;
   }
