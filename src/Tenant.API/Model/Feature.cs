@@ -8,5 +8,5 @@ public class Feature {
   [Column("name")]
   public string Name { get; set; } = null!;
 
-  // public virtual ICollection<HospitalTenant>? Tenants { get; set; }
+  public int TenantId { get; set; }
 }

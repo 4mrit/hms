@@ -21,16 +21,7 @@ public class TenantContext : DbContext {
     modelBuilder.Entity<HospitalTenant>()
         .HasOne(tenant => tenant.Scheme)
         .WithOne()
-        .OnDelete(DeleteBehavior.Cascade);
-
-    modelBuilder.Entity<HospitalTenant>()
-        .HasOne(tenant => tenant.PrimaryDatabase)
-        .WithOne()
-        .OnDelete(DeleteBehavior.Cascade);
-
-    modelBuilder.Entity<HospitalTenant>()
-        .HasOne(tenant => tenant.SecondaryDatabase)
-        .WithOne()
+        .HasForeignKey<Scheme>(scheme => scheme.TenantId)
         .OnDelete(DeleteBehavior.Cascade);
   }
 }

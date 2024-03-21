@@ -80,6 +80,9 @@ namespace Tenant.API.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("name");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Features");
@@ -110,10 +113,7 @@ namespace Tenant.API.Migrations
                     b.Property<int>("PrimaryDatabaseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SchemeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SecondaryDatabaseId")
+                    b.Property<int?>("SecondaryDatabaseId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
@@ -124,8 +124,6 @@ namespace Tenant.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PrimaryDatabaseId");
-
-                    b.HasIndex("SchemeId");
 
                     b.HasIndex("SecondaryDatabaseId");
 
@@ -145,11 +143,17 @@ namespace Tenant.API.Migrations
                     b.Property<int>("SecondaryColorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PrimaryColorId");
 
                     b.HasIndex("SecondaryColorId");
+
+                    b.HasIndex("TenantId")
+                        .IsUnique();
 
                     b.ToTable("Schemes");
                 });
@@ -165,6 +169,9 @@ namespace Tenant.API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("conncection_string");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -194,19 +201,11 @@ namespace Tenant.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("hms.Tenant.API.Model.Scheme", "Scheme")
-                        .WithMany()
-                        .HasForeignKey("SchemeId");
-
                     b.HasOne("hms.Tenant.API.Model.TenantDatabase", "SecondaryDatabase")
                         .WithMany()
-                        .HasForeignKey("SecondaryDatabaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SecondaryDatabaseId");
 
                     b.Navigation("PrimaryDatabase");
-
-                    b.Navigation("Scheme");
 
                     b.Navigation("SecondaryDatabase");
                 });
@@ -225,9 +224,20 @@ namespace Tenant.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("hms.Tenant.API.Model.HospitalTenant", null)
+                        .WithOne("Scheme")
+                        .HasForeignKey("hms.Tenant.API.Model.Scheme", "TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("PrimaryColor");
 
                     b.Navigation("SecondaryColor");
+                });
+
+            modelBuilder.Entity("hms.Tenant.API.Model.HospitalTenant", b =>
+                {
+                    b.Navigation("Scheme");
                 });
 #pragma warning restore 612, 618
         }
