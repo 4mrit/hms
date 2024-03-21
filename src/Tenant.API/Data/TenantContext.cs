@@ -20,14 +20,17 @@ public class TenantContext : DbContext {
 
     modelBuilder.Entity<HospitalTenant>()
         .HasOne(tenant => tenant.Scheme)
-        .WithOne();
+        .WithOne()
+        .OnDelete(DeleteBehavior.Cascade);
 
     modelBuilder.Entity<HospitalTenant>()
         .HasOne(tenant => tenant.PrimaryDatabase)
-        .WithOne();
+        .WithOne()
+        .OnDelete(DeleteBehavior.Cascade);
 
     modelBuilder.Entity<HospitalTenant>()
         .HasOne(tenant => tenant.SecondaryDatabase)
-        .WithOne();
+        .WithOne()
+        .OnDelete(DeleteBehavior.Cascade);
   }
 }
