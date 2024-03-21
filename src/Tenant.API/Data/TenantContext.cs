@@ -13,18 +13,21 @@ public class TenantContext : DbContext {
   public DbSet<TenantDatabase> TenantDatabases { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) {
-    // Configure relationship between HospitalTenant and Feature
-    // modelBuilder.Entity<HospitalTenant>()
-    //     .HasMany(h => h.Features)           // HospitalTenant has many
-    //     Features .WithOne()                          // Feature has one
-    //     HospitalTenant .HasForeignKey("HospitalTenantId"); // Foreign key
-    //     property in Feature
-    //
-    // modelBuilder.Entity<Feature>()
-    //     .HasOne(f => f.Tenant)      // Feature has one HospitalTenant
-    //     .WithMany()                 // HospitalTenant has many Features
-    //     .HasForeignKey("TenantId"); // Foreign key property in Feature
-    //
-    modelBuilder.Entity<HospitalTenant>().HasMany(h => h.Features).WithMany();
+
+    modelBuilder.Entity<HospitalTenant>()
+        .HasMany(tenant => tenant.Features)
+        .WithMany();
+
+    modelBuilder.Entity<HospitalTenant>()
+        .HasOne(tenant => tenant.Scheme)
+        .WithOne();
+
+    modelBuilder.Entity<HospitalTenant>()
+        .HasOne(tenant => tenant.PrimaryDatabase)
+        .WithOne();
+
+    modelBuilder.Entity<HospitalTenant>()
+        .HasOne(tenant => tenant.SecondaryDatabase)
+        .WithOne();
   }
 }
