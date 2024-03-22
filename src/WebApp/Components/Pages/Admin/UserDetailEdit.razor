@@ -6,6 +6,8 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @using Microsoft.AspNetCore.Components.Forms
+@inject HttpClient Http
+
 
 
 
@@ -59,16 +61,16 @@
 
                 @if(getfeatures != null)
                 {
-            <div class="check-features">
-                    @foreach (var feature in getfeatures)
-                    {
-                        <div >
-                        <input type="checkbox" id="@($"feature{feature.Id}")"  />
-                        <label for="@($"feature{feature.Id}")">@feature.Name</label>
-                        </div>
-                    }
+                    <div class="check-features">
+                            @foreach (var feature in getfeatures)
+                            {
+                                <div >
+                                    <input type="checkbox" id="@($"feature{feature.Id}")" value="@($"feature{feature.Id}")" @bind = "feature.IsChecked" />
+                                <label for="@($"feature{feature.Id}")">@feature.Name</label>
+                                </div>
+                            }
         
-            </div>
+                    </div>
                 }
 
 
@@ -97,12 +99,22 @@
 @code {
     [Parameter] public int id { get; set; }
 
-    private Feature[] getfeatures;
     private HospitalTenant tenants;
 
 
     [Inject]
     private IHttpClientFactory _httpClientFactory { get; set; }
+
+    public class FeatureViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsChecked { get; set; }
+    }
+
+    private FeatureViewModel[] getfeatures;
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -112,17 +124,28 @@
 
             // Api request to get list of all the features
             var requestUri = "api/Tenants/Features";
-            getfeatures = await httpClient.GetFromJsonAsync<Feature[]>(requestUri);
+            getfeatures = await httpClient.GetFromJsonAsync<FeatureViewModel[]>(requestUri);
 
             // Api request to get Tenants Detail
             requestUri = $"/api/tenants/{id}";
             tenants = await httpClient.GetFromJsonAsync<HospitalTenant>(requestUri);
 
 
-            // foreach(var feature in getfeatures)
-            // {
-            //     Console.WriteLine(feature.Name);
-            // }
+            foreach(var feature in getfeatures)
+            {
+                foreach(var getfeaturedata in tenants.Features)
+                {
+                    if(feature.Id == getfeaturedata.Id)
+                    {
+                        feature.IsChecked = true;
+                    }
+                }
+            }
+
+            foreach (var feature in getfeatures)
+            {
+                Console.WriteLine(feature.IsChecked);
+            }
 
 
 
@@ -135,11 +158,53 @@
     }
 
 
-    private void DetailSubmit()
+    async private void DetailSubmit()
     {
-        Console.WriteLine("Helloworld");
-        Console.WriteLine(tenants.Name);
-    }
+        if(tenants != null)
+        {
+
+            Console.WriteLine("Helloworld");
+            Console.WriteLine(tenants.Name);
+
+            tenants.Features = null;
+            tenants.Features = new List<Feature>();
+
+            foreach(var featuredata in getfeatures)
+            {
+                if(featuredata.IsChecked)
+                {
+                    Feature newfeature = new Feature
+                    {
+                        Id = featuredata.Id,
+                        Name = featuredata.Name
+                    };
+                    tenants.Features.Add(newfeature);
+
+
+                }
+            }
+
+
+            foreach(var featurename in tenants.Features)
+            {
+                Console.WriteLine(featurename.Name);
+            }
+
+            try
+            {
+                var requestUri = "api/Tenants/";
+                var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+                using var response = await httpClient.PutAsJsonAsync( requestUri, tenants);
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+
+            }
+        }
+        }
 
     
 }
