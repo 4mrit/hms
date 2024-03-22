@@ -1,0 +1,207 @@
+﻿@page "/admin/newuser/"
+@inject IHttpClientFactory ClientFactory
+@using hms.Tenant.API.Model;
+@using hms.Media.API.Model;
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+@inject HttpClient Http
+
+
+
+
+
+<h3>CreateNewTenant</h3>
+
+@* @if (tenants != null) *@
+@* { *@
+
+
+    <form @onsubmit="DetailSubmit">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" @bind="name" placeholder="Name" />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input type="text" @bind="address" placeholder="Address" />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>URL</label>
+            <input type="text" @bind="url" placeholder="URL" />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Media Root Path</label>
+            <input type="text" @bind="mediaRootPath" placeholder="Media Root Path" />
+            <br />
+        </div>
+        <!-- Features -->
+        <div class="form-group ">
+            <lable>Features</lable>
+
+
+            @if (getfeatures != null)
+            {
+                <div class="check-features">
+                    @foreach (var feature in getfeatures)
+                    {
+                        <div>
+                            <input type="checkbox" id="@($"feature{feature.Id}")" value="@($"feature{feature.Id}")" @bind="feature.IsChecked" />
+                            <label for="@($"feature{feature.Id}")">@feature.Name</label>
+                        </div>
+                    }
+
+                </div>
+            }
+
+
+        </div>
+
+        <br />
+        <div class="form-group">
+            <label>Primary Color Hex Value</label>
+            <input type="text" @bind="primaryColorHexValue" placeholder="Primary Color Hex Value" />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Secondary Color Hex Value</label>
+            <input type="text" @bind="secondaryColorHexValue" placeholder="Secondary Color Hex Value" />
+            <br />
+        </div>
+        <!-- Other form fields... -->
+        <div class="form-group">
+            <label>Primary Database</label>
+            <input type="text" @bind="primaryDatabase" placeholder="Primary Database" />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Secondary Database</label>
+            <input type="text" @bind="secondaryDatabase" placeholder="Secondary Database" />
+            <br />
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+
+
+
+@* } *@
+
+@code {
+    private HospitalTenant tenants  = new HospitalTenant();
+
+
+
+    [Inject]
+    private IHttpClientFactory _httpClientFactory { get; set; }
+
+    public class FeatureViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public bool IsChecked { get; set; }
+    }
+
+    private FeatureViewModel[] getfeatures;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            // Api request to get list of all the features
+            var requestUri = "api/Tenants/Features";
+            getfeatures = await httpClient.GetFromJsonAsync<FeatureViewModel[]>(requestUri);
+
+            // Api request to get Tenants Detail
+
+
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+
+        }
+    }
+
+    private string name;
+    private string address;
+    private string url;
+    private string mediaRootPath;
+    private string primaryColorHexValue;
+    private string secondaryColorHexValue;
+    private string primaryDatabase;
+    private string secondaryDatabase;
+
+    private async Task DetailSubmit()
+    {
+
+
+
+        tenants.Name = name;
+        tenants.Address = address;
+        tenants.Url = url;
+        tenants.MediaRootPath = mediaRootPath;
+
+
+        tenants.Features = new List<Feature>();
+        foreach (var featuredata in getfeatures)
+        {
+            if (featuredata.IsChecked)
+            {
+                Feature newfeature = new Feature
+                    {
+                        Id = featuredata.Id,
+                        Name = featuredata.Name
+                    };
+                tenants.Features.Add(newfeature);
+
+
+            }
+        }
+
+        tenants.Scheme = new Scheme();
+        tenants.Scheme.PrimaryColor = new Color();
+        tenants.Scheme.SecondaryColor = new Color();
+
+
+        tenants.Scheme.PrimaryColor.HexValue = primaryColorHexValue;
+        tenants.Scheme.SecondaryColor.HexValue = secondaryColorHexValue;
+
+        tenants.PrimaryDatabase = new TenantDatabase();
+        tenants.SecondaryDatabase = new TenantDatabase();
+
+
+        tenants.PrimaryDatabase.ConnectionString = primaryDatabase;
+        tenants.SecondaryDatabase.ConnectionString = secondaryDatabase;
+
+
+        try
+        {
+            var requestUri = "api/Tenants/";
+            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            using var response = await httpClient.PostAsJsonAsync(requestUri, tenants);
+            Console.WriteLine("Form data submitted successfully!");
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+
+        }
+        // Send the form data to your API (adjust the URL as needed)
+        // var response = await Http.PostAsJsonAsync("https://your-api-url/api/resource", formData);
+        // response.EnsureSuccessStatusCode(); // Ensure a successful response
+
+        // Handle the response as needed (e.g., show a success message)
+
+        
+        }
+    
+}
+
