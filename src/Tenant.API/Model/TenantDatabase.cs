@@ -6,8 +6,11 @@ public class TenantDatabase {
   [Column("database_id")]
   public int Id { get; set; }
 
-  [Column("conncection_string")]
+  [Column("connection_string")]
   public String ConnectionString { get; set; } = null!;
 
-  public int TenantId { get; set; }
+  [Column("isPrimary")]
+  public bool IsPrimary { get; set; }
+
+  // public HospitalTenant Tenant { get; set; }
 }

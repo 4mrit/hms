@@ -7,6 +7,4 @@ public class Feature {
 
   [Column("name")]
   public string Name { get; set; } = null!;
-
-  public int TenantId { get; set; }
 }
