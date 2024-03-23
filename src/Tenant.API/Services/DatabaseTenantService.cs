@@ -1,42 +1,45 @@
 using Bogus;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 using hms.Tenant.API.Data;
 using hms.Tenant.API.Model;
 using hms.Media.API.Model;
 
 namespace hms.Tenant.API.Services;
 
-using System.Collections.ObjectModel;
-
-public class DatabaseTenantService {
+public class DatabaseTenantService
+{
   public IWebHostEnvironment WebHostEnvironment { get; }
   private readonly TenantContext _context;
 
   public DatabaseTenantService(IWebHostEnvironment webHostEnvironment,
-                               TenantContext context) {
+                               TenantContext context)
+  {
     this.WebHostEnvironment = webHostEnvironment;
     this._context = context;
   }
 
-  public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
+  public async Task<IEnumerable<HospitalTenant>> GetAllTenants()
+  {
     IEnumerable<HospitalTenant> tenants = null!;
     tenants = await _context.Tenants.Include(t => t.Scheme)
-                  .Include(t => t.Scheme.PrimaryColor)
-                  .Include(t => t.Scheme.SecondaryColor)
+                  .Include(t => t.Scheme!.PrimaryColor)
+                  .Include(t => t.Scheme!.SecondaryColor)
                   .Include(t => t.Features)
                   .Include(t => t.PrimaryDatabase)
                   .Include(t => t.SecondaryDatabase)
                   .AsNoTracking()
                   .ToListAsync();
+
     return tenants;
   }
 
-  public async Task<HospitalTenant> GetTenant(int TenantId) {
+  public async Task<HospitalTenant> GetTenantById(int TenantId)
+  {
     HospitalTenant tenant = null!;
     tenant = await _context.Tenants.Include(t => t.Scheme)
-                 .Include(t => t.Scheme.PrimaryColor)
-                 .Include(t => t.Scheme.SecondaryColor)
+                 .Include(t => t.Scheme!.PrimaryColor)
+                 .Include(t => t.Scheme!.SecondaryColor)
                  .Include(t => t.Features)
                  .Include(t => t.PrimaryDatabase)
                  .Include(t => t.SecondaryDatabase)
@@ -45,38 +48,51 @@ public class DatabaseTenantService {
     return tenant;
   }
 
-  public async Task<IEnumerable<Feature>> GetFeatures() {
+  public async Task<IEnumerable<Feature>> GetAllFeatures()
+  {
     IEnumerable<Feature> features;
     features = await _context.Features.AsNoTracking().ToListAsync();
     return features;
   }
 
-  public async Task<HospitalTenant> AddTenant(HospitalTenant Tenant) {
+  public async Task<HospitalTenant> AddTenant(HospitalTenant Tenant)
+  {
     await _context.AddAsync(Tenant);
     await _context.SaveChangesAsync();
     return Tenant;
   }
 
-  public async Task<HospitalTenant> UpdateTenant(HospitalTenant tenant) {
+  public async Task<HospitalTenant> UpdateTenantUsingId(int TenantId,
+                                                        HospitalTenant tenant)
+  {
+    tenant.Id = TenantId;
     _context.Update(tenant);
     await _context.SaveChangesAsync();
     return tenant;
   }
 
-  public async Task<HospitalTenant> DeleteTenant(int TenantId) {
-    HospitalTenant DbTenant;
-    DbTenant = await GetTenant(TenantId);
-    _context.Remove(DbTenant);
-    await _context.SaveChangesAsync();
-    return DbTenant;
+  public async Task<HospitalTenant> DeleteTenant(int TenantId)
+  {
+    // HospitalTenant DbTenant;
+    // DbTenant = await GetTenantById(TenantId);
+    // _context.Remove(DbTenant);
+    //
+    // _context.ChangeTracker.DetectChanges();
+    // Console.WriteLine(_context.ChangeTracker.DebugView.LongView);
+    // await _context.SaveChangesAsync();
+    await _context.Tenants.Where(tenant => tenant.Id == TenantId)
+        .ExecuteDeleteAsync();
+    return new HospitalTenant();
   }
 
-  public void InsertDummyData() {
+  public void InsertDummyData()
+  {
 
     Console.WriteLine("Adding DummyData");
     var faker = new Faker();
 
-    HospitalTenant tenant = new HospitalTenant {
+    HospitalTenant tenant = new HospitalTenant
+    {
 
       Address = faker.Address.StreetAddress(),
       Name = faker.Name.FullName(),
@@ -92,7 +108,8 @@ public class DatabaseTenantService {
             new Feature() { Name = faker.Internet.UserName() }
           },
       Scheme =
-          new Scheme() {
+          new Scheme()
+          {
             PrimaryColor =
                 new Color { HexValue = faker.Random.Hexadecimal(length: 6) },
             SecondaryColor =
@@ -104,18 +121,3 @@ public class DatabaseTenantService {
     Console.WriteLine("Added DummyData");
   }
 }
-
-// ----- fluent API ------------------//
-// var devices = _context.Devices
-//                     .Where(d=>d.DeviceName == "node")
-//                     .OrderBy(d=> d.Id)
-//                     .GroupBy(d=> d.DeviceName);
-//--------------------------------------//
-
-//------------ LINQ ---------------------//
-// var devices = from device in _context.Devices
-//                 where device.DeviceName == "node"
-//                 orderby device.Id
-//                 group device by device.DeviceName into newGroup
-//                 select newGroup;
-//----------------------------------------//

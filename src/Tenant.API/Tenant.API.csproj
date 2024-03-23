@@ -17,12 +17,17 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore"/>
+ 
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+
   </ItemGroup>
 
   <ItemGroup>
 
     <ProjectReference Include="..\hms.ServiceDefaults\hms.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Media.API\Media.API.csproj" />
+
+    <ProjectReference Include="..\Identity.API\Identity.API.csproj" />
   </ItemGroup>
 
 </Project>

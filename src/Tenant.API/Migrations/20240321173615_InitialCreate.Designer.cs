@@ -11,7 +11,7 @@ using hms.Tenant.API.Data;
 namespace Tenant.API.Migrations
 {
     [DbContext(typeof(TenantContext))]
-    [Migration("20240313195234_InitialCreate")]
+    [Migration("20240321173615_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,6 +21,21 @@ namespace Tenant.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("FeatureHospitalTenant", b =>
+                {
+                    b.Property<int>("FeaturesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HospitalTenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeaturesId", "HospitalTenantId");
+
+                    b.HasIndex("HospitalTenantId");
+
+                    b.ToTable("FeatureHospitalTenant");
+                });
 
             modelBuilder.Entity("hms.Media.API.Model.Color", b =>
                 {
@@ -63,17 +78,15 @@ namespace Tenant.API.Migrations
                         .HasColumnType("int")
                         .HasColumnName("feature_id");
 
-                    b.Property<int?>("HospitalTenantId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("HospitalTenantId");
+                    b.HasKey("Id");
 
                     b.ToTable("Features");
                 });
@@ -103,10 +116,7 @@ namespace Tenant.API.Migrations
                     b.Property<int>("PrimaryDatabaseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SchemeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SecondaryDatabaseId")
+                    b.Property<int?>("SecondaryDatabaseId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
@@ -117,8 +127,6 @@ namespace Tenant.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PrimaryDatabaseId");
-
-                    b.HasIndex("SchemeId");
 
                     b.HasIndex("SecondaryDatabaseId");
 
@@ -138,11 +146,17 @@ namespace Tenant.API.Migrations
                     b.Property<int>("SecondaryColorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PrimaryColorId");
 
                     b.HasIndex("SecondaryColorId");
+
+                    b.HasIndex("TenantId")
+                        .IsUnique();
 
                     b.ToTable("Schemes");
                 });
@@ -159,16 +173,27 @@ namespace Tenant.API.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("conncection_string");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("TenantDatabases");
                 });
 
-            modelBuilder.Entity("hms.Tenant.API.Model.Feature", b =>
+            modelBuilder.Entity("FeatureHospitalTenant", b =>
                 {
+                    b.HasOne("hms.Tenant.API.Model.Feature", null)
+                        .WithMany()
+                        .HasForeignKey("FeaturesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("hms.Tenant.API.Model.HospitalTenant", null)
-                        .WithMany("Features")
-                        .HasForeignKey("HospitalTenantId");
+                        .WithMany()
+                        .HasForeignKey("HospitalTenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("hms.Tenant.API.Model.HospitalTenant", b =>
@@ -179,19 +204,11 @@ namespace Tenant.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("hms.Tenant.API.Model.Scheme", "Scheme")
-                        .WithMany()
-                        .HasForeignKey("SchemeId");
-
                     b.HasOne("hms.Tenant.API.Model.TenantDatabase", "SecondaryDatabase")
                         .WithMany()
-                        .HasForeignKey("SecondaryDatabaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SecondaryDatabaseId");
 
                     b.Navigation("PrimaryDatabase");
-
-                    b.Navigation("Scheme");
 
                     b.Navigation("SecondaryDatabase");
                 });
@@ -210,6 +227,12 @@ namespace Tenant.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("hms.Tenant.API.Model.HospitalTenant", null)
+                        .WithOne("Scheme")
+                        .HasForeignKey("hms.Tenant.API.Model.Scheme", "TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("PrimaryColor");
 
                     b.Navigation("SecondaryColor");
@@ -217,7 +240,7 @@ namespace Tenant.API.Migrations
 
             modelBuilder.Entity("hms.Tenant.API.Model.HospitalTenant", b =>
                 {
-                    b.Navigation("Features");
+                    b.Navigation("Scheme");
                 });
 #pragma warning restore 612, 618
         }
