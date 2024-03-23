@@ -192,10 +192,11 @@
 
             try
             {
-                var requestUri = "api/Tenants/";
+                var requestUri = $"api/Tenants/{id}";
                 var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
                 using var response = await httpClient.PutAsJsonAsync( requestUri, tenants);
+                Console.WriteLine(response);
 
             }
             catch (HttpRequestException ex)
