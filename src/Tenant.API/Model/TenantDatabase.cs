@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace hms.Tenant.API.Model;
 
-public class TenantDatabase{
-    
-    [Column("database_id")]
-    public int Id { get; set;}
+public class TenantDatabase {
 
-    [Column("conncection_string")]
-    public String ConnectionString { get; set; } = null!;
+  [Column("database_id")]
+  public int Id { get; set; }
 
+  [Column("conncection_string")]
+  public String ConnectionString { get; set; } = null!;
+
+  public int TenantId { get; set; }
 }

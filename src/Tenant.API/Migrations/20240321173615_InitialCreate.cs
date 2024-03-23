@@ -30,6 +30,22 @@ namespace Tenant.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Features",
+                columns: table => new
+                {
+                    feature_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Features", x => x.feature_id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "MediaFiles",
                 columns: table => new
                 {
@@ -51,38 +67,12 @@ namespace Tenant.API.Migrations
                     database_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     conncection_string = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TenantDatabases", x => x.database_id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Schemes",
-                columns: table => new
-                {
-                    scheme_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PrimaryColorId = table.Column<int>(type: "int", nullable: false),
-                    SecondaryColorId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Schemes", x => x.scheme_id);
-                    table.ForeignKey(
-                        name: "FK_Schemes_Colors_PrimaryColorId",
-                        column: x => x.PrimaryColorId,
-                        principalTable: "Colors",
-                        principalColumn: "color_id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Schemes_Colors_SecondaryColorId",
-                        column: x => x.SecondaryColorId,
-                        principalTable: "Colors",
-                        principalColumn: "color_id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -100,18 +90,12 @@ namespace Tenant.API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     media_root_path = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    SchemeId = table.Column<int>(type: "int", nullable: true),
                     PrimaryDatabaseId = table.Column<int>(type: "int", nullable: false),
-                    SecondaryDatabaseId = table.Column<int>(type: "int", nullable: false)
+                    SecondaryDatabaseId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tenants", x => x.tenant_id);
-                    table.ForeignKey(
-                        name: "FK_Tenants_Schemes_SchemeId",
-                        column: x => x.SchemeId,
-                        principalTable: "Schemes",
-                        principalColumn: "scheme_id");
                     table.ForeignKey(
                         name: "FK_Tenants_TenantDatabases_PrimaryDatabaseId",
                         column: x => x.PrimaryDatabaseId,
@@ -122,35 +106,72 @@ namespace Tenant.API.Migrations
                         name: "FK_Tenants_TenantDatabases_SecondaryDatabaseId",
                         column: x => x.SecondaryDatabaseId,
                         principalTable: "TenantDatabases",
-                        principalColumn: "database_id",
+                        principalColumn: "database_id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "FeatureHospitalTenant",
+                columns: table => new
+                {
+                    FeaturesId = table.Column<int>(type: "int", nullable: false),
+                    HospitalTenantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeatureHospitalTenant", x => new { x.FeaturesId, x.HospitalTenantId });
+                    table.ForeignKey(
+                        name: "FK_FeatureHospitalTenant_Features_FeaturesId",
+                        column: x => x.FeaturesId,
+                        principalTable: "Features",
+                        principalColumn: "feature_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FeatureHospitalTenant_Tenants_HospitalTenantId",
+                        column: x => x.HospitalTenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "tenant_id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Features",
+                name: "Schemes",
                 columns: table => new
                 {
-                    feature_id = table.Column<int>(type: "int", nullable: false)
+                    scheme_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    HospitalTenantId = table.Column<int>(type: "int", nullable: true)
+                    PrimaryColorId = table.Column<int>(type: "int", nullable: false),
+                    SecondaryColorId = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Features", x => x.feature_id);
+                    table.PrimaryKey("PK_Schemes", x => x.scheme_id);
                     table.ForeignKey(
-                        name: "FK_Features_Tenants_HospitalTenantId",
-                        column: x => x.HospitalTenantId,
+                        name: "FK_Schemes_Colors_PrimaryColorId",
+                        column: x => x.PrimaryColorId,
+                        principalTable: "Colors",
+                        principalColumn: "color_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Schemes_Colors_SecondaryColorId",
+                        column: x => x.SecondaryColorId,
+                        principalTable: "Colors",
+                        principalColumn: "color_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Schemes_Tenants_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Tenants",
-                        principalColumn: "tenant_id");
+                        principalColumn: "tenant_id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Features_HospitalTenantId",
-                table: "Features",
+                name: "IX_FeatureHospitalTenant_HospitalTenantId",
+                table: "FeatureHospitalTenant",
                 column: "HospitalTenantId");
 
             migrationBuilder.CreateIndex(
@@ -164,14 +185,15 @@ namespace Tenant.API.Migrations
                 column: "SecondaryColorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Schemes_TenantId",
+                table: "Schemes",
+                column: "TenantId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tenants_PrimaryDatabaseId",
                 table: "Tenants",
                 column: "PrimaryDatabaseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tenants_SchemeId",
-                table: "Tenants",
-                column: "SchemeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tenants_SecondaryDatabaseId",
@@ -183,22 +205,25 @@ namespace Tenant.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Features");
+                name: "FeatureHospitalTenant");
 
             migrationBuilder.DropTable(
                 name: "MediaFiles");
 
             migrationBuilder.DropTable(
-                name: "Tenants");
-
-            migrationBuilder.DropTable(
                 name: "Schemes");
 
             migrationBuilder.DropTable(
-                name: "TenantDatabases");
+                name: "Features");
 
             migrationBuilder.DropTable(
                 name: "Colors");
+
+            migrationBuilder.DropTable(
+                name: "Tenants");
+
+            migrationBuilder.DropTable(
+                name: "TenantDatabases");
         }
     }
 }

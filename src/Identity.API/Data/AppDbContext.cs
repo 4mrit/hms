@@ -4,5 +4,6 @@ using hms.Identity.API.Models;
 
 namespace hms.Identity.API.Data;
 
-class AppDbContext
-(DbContextOptions<AppDbContext> options) : IdentityDbContext<MyUser>(options) {}
+public class AppDbContext
+(DbContextOptions<AppDbContext> options) : IdentityDbContext<MyUser>(options)
+{ }
