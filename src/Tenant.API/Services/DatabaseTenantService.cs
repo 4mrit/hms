@@ -7,72 +7,62 @@ using hms.Media.API.Model;
 
 namespace hms.Tenant.API.Services;
 
-public class DatabaseTenantService
-{
+public class DatabaseTenantService {
   public IWebHostEnvironment WebHostEnvironment { get; }
   private readonly TenantContext _context;
 
   public DatabaseTenantService(IWebHostEnvironment webHostEnvironment,
-                               TenantContext context)
-  {
+                               TenantContext context) {
     this.WebHostEnvironment = webHostEnvironment;
     this._context = context;
   }
 
-  public async Task<IEnumerable<HospitalTenant>> GetAllTenants()
-  {
+  public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
     IEnumerable<HospitalTenant> tenants = null!;
     tenants = await _context.Tenants.Include(t => t.Scheme)
                   .Include(t => t.Scheme!.PrimaryColor)
                   .Include(t => t.Scheme!.SecondaryColor)
                   .Include(t => t.Features)
-                  .Include(t => t.PrimaryDatabase)
-                  .Include(t => t.SecondaryDatabase)
+                  .Include(t => t.Databases)
                   .AsNoTracking()
                   .ToListAsync();
 
     return tenants;
   }
 
-  public async Task<HospitalTenant> GetTenantById(int TenantId)
-  {
+  public async Task<HospitalTenant> GetTenantById(int TenantId) {
     HospitalTenant tenant = null!;
     tenant = await _context.Tenants.Include(t => t.Scheme)
                  .Include(t => t.Scheme!.PrimaryColor)
                  .Include(t => t.Scheme!.SecondaryColor)
                  .Include(t => t.Features)
-                 .Include(t => t.PrimaryDatabase)
-                 .Include(t => t.SecondaryDatabase)
+                 .Include(t => t.Databases)
                  .AsNoTracking()
                  .FirstOrDefaultAsync(t => t.Id == TenantId);
     return tenant;
   }
 
-  public async Task<IEnumerable<Feature>> GetAllFeatures()
-  {
+  public async Task<IEnumerable<Feature>> GetAllFeatures() {
     IEnumerable<Feature> features;
     features = await _context.Features.AsNoTracking().ToListAsync();
     return features;
   }
 
-  public async Task<HospitalTenant> AddTenant(HospitalTenant Tenant)
-  {
+  public async Task<HospitalTenant> AddTenant(HospitalTenant Tenant) {
     await _context.AddAsync(Tenant);
     await _context.SaveChangesAsync();
     return Tenant;
   }
 
   public async Task<HospitalTenant> UpdateTenantUsingId(int TenantId,
-                                                        HospitalTenant tenant)
-  {
+                                                        HospitalTenant tenant) {
     tenant.Id = TenantId;
     _context.Update(tenant);
     await _context.SaveChangesAsync();
     return tenant;
   }
 
-  public async Task<HospitalTenant> DeleteTenant(int TenantId)
-  {
+  public async Task<HospitalTenant> DeleteTenant(int TenantId) {
     // HospitalTenant DbTenant;
     // DbTenant = await GetTenantById(TenantId);
     // _context.Remove(DbTenant);
@@ -85,22 +75,23 @@ public class DatabaseTenantService
     return new HospitalTenant();
   }
 
-  public void InsertDummyData()
-  {
+  public void InsertDummyData() {
 
     Console.WriteLine("Adding DummyData");
     var faker = new Faker();
 
-    HospitalTenant tenant = new HospitalTenant
-    {
+    HospitalTenant tenant = new HospitalTenant {
 
       Address = faker.Address.StreetAddress(),
       Name = faker.Name.FullName(),
       Url = faker.Internet.DomainName(),
-      PrimaryDatabase =
-          new TenantDatabase() { ConnectionString = faker.Internet.Url() },
-      SecondaryDatabase =
-          new TenantDatabase() { ConnectionString = faker.Internet.Url() },
+      Databases =
+          new Collection<TenantDatabase>() {
+            new TenantDatabase { ConnectionString = (string)faker.Internet.Ip(),
+                                 IsPrimary = true },
+            new TenantDatabase { ConnectionString = (string)faker.Internet.Ip(),
+                                 IsPrimary = false }
+          },
       MediaRootPath = faker.System.FilePath(),
       Features =
           new Collection<Feature>() {
@@ -108,8 +99,7 @@ public class DatabaseTenantService
             new Feature() { Name = faker.Internet.UserName() }
           },
       Scheme =
-          new Scheme()
-          {
+          new Scheme() {
             PrimaryColor =
                 new Color { HexValue = faker.Random.Hexadecimal(length: 6) },
             SecondaryColor =

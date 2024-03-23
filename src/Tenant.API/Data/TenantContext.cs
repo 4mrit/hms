@@ -19,6 +19,10 @@ public class TenantContext : DbContext {
         .WithMany();
 
     modelBuilder.Entity<HospitalTenant>()
+        .HasMany(tenant => tenant.Databases)
+        .WithMany();
+
+    modelBuilder.Entity<HospitalTenant>()
         .HasOne(tenant => tenant.Scheme)
         .WithOne()
         .HasForeignKey<Scheme>(scheme => scheme.TenantId)

@@ -27,6 +27,5 @@ public class HospitalTenant {
   // virtual for lazy loading
   public virtual Scheme? Scheme { get; set; }
   public virtual ICollection<Feature>? Features { get; set; }
-  public virtual TenantDatabase PrimaryDatabase { get; set; } = null!;
-  public virtual TenantDatabase? SecondaryDatabase { get; set; }
+  public virtual ICollection<TenantDatabase>? Databases { get; set; } = null!;
 }
