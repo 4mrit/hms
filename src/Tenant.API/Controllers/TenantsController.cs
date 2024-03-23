@@ -9,38 +9,26 @@ namespace hms.Tenant.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TenantsController : ControllerBase
-{
+public class TenantsController : ControllerBase {
   public DatabaseTenantService TenantService { get; }
-  public TenantsController(DatabaseTenantService tenantService)
-  {
+  public TenantsController(DatabaseTenantService tenantService) {
     this.TenantService = tenantService;
   }
 
   [HttpGet]
-  public async Task<IEnumerable<HospitalTenant>> GetAllTenants()
-  {
+  public async Task<IEnumerable<HospitalTenant>> GetAllTenants() {
     return await TenantService.GetAllTenants();
   }
 
   [HttpGet("{TenantId}")]
-  public async Task<ActionResult<HospitalTenant>> GetTenantById(int TenantId)
-  {
+  public async Task<ActionResult<HospitalTenant>> GetTenantById(int TenantId) {
     return await TenantService.GetTenantById(TenantId);
-  }
-
-  [HttpGet("Features")]
-  public async Task<IEnumerable<Feature>> GetAllFeatures()
-  {
-    return await TenantService.GetAllFeatures();
   }
 
   [HttpPut("{TenantId}")]
   public async Task<ActionResult<HospitalTenant>>
-  UpdateTenant(int TenantId, HospitalTenant Tenant)
-  {
-    if (await TenantService.UpdateTenantUsingId(TenantId, Tenant) == null)
-    {
+  UpdateTenant(int TenantId, HospitalTenant Tenant) {
+    if (await TenantService.UpdateTenantUsingId(TenantId, Tenant) == null) {
       return NotFound();
     }
     return NoContent();
@@ -48,8 +36,7 @@ public class TenantsController : ControllerBase
 
   [HttpPost]
   public async Task<ActionResult<HospitalTenant>>
-  AddTenant(HospitalTenant Tenant)
-  {
+  AddTenant(HospitalTenant Tenant) {
     HospitalTenant AddedTenant = await TenantService.AddTenant(Tenant);
     return CreatedAtAction(
         actionName: nameof(GetTenantById),
@@ -58,16 +45,14 @@ public class TenantsController : ControllerBase
   }
 
   [HttpDelete("{TenantId}")]
-  public async Task<ActionResult> DeleteTenant(int TenantId)
-  {
+  public async Task<ActionResult> DeleteTenant(int TenantId) {
     await TenantService.DeleteTenant(TenantId);
     return NoContent();
   }
 
   [Route("AddDummyData")]
   [HttpGet]
-  public ActionResult SetDummyData()
-  {
+  public ActionResult SetDummyData() {
     TenantService.InsertDummyData();
     return Ok();
   }

@@ -42,12 +42,6 @@ public class DatabaseTenantService {
     return tenant;
   }
 
-  public async Task<IEnumerable<Feature>> GetAllFeatures() {
-    IEnumerable<Feature> features;
-    features = await _context.Features.AsNoTracking().ToListAsync();
-    return features;
-  }
-
   public async Task<HospitalTenant> AddTenant(HospitalTenant Tenant) {
     await _context.AddAsync(Tenant);
     await _context.SaveChangesAsync();
