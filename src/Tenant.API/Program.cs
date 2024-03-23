@@ -20,7 +20,7 @@ builder.Services.AddAuthorizationBuilder();
 
 builder.AddMySqlDbContext<TenantContext>("tenantdb");
 builder.Services.AddTransient<DatabaseTenantService>();
-
+builder.Services.AddTransient<DatabaseFeatureService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
