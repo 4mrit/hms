@@ -1,5 +1,6 @@
 ﻿@page "/admin/newuser/"
 @inject IHttpClientFactory ClientFactory
+@using System.Collections.ObjectModel
 @using hms.Tenant.API.Model;
 @using hms.Media.API.Model;
 @inject NavigationManager NavigationManager
@@ -172,12 +173,13 @@
         tenants.Scheme.PrimaryColor.HexValue = primaryColorHexValue;
         tenants.Scheme.SecondaryColor.HexValue = secondaryColorHexValue;
 
-       // tenants.PrimaryDatabase = new TenantDatabase();
-       // tenants.SecondaryDatabase = new TenantDatabase();
+        tenants.Databases = new Collection<TenantDatabase>()
+        {
+            new TenantDatabase(){IsPrimary = true, ConnectionString = primaryDatabase},
+            new TenantDatabase(){IsPrimary = false, ConnectionString= secondaryDatabase}
 
+        };
 
-        //tenants.PrimaryDatabase.ConnectionString = primaryDatabase;
-       // tenants.SecondaryDatabase.ConnectionString = secondaryDatabase;
 
 
         try

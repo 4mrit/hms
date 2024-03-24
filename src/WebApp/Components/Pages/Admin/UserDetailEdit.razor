@@ -1,6 +1,8 @@
 ﻿@page "/admin/tenants/{id:int}/edit"
 @using System.Net.Http.Json
 @using System.Text.Json
+@using System.Collections.ObjectModel
+@using hms.Media.API.Model
 @using hms.Tenant.API.Model;
 @inject IHttpClientFactory ClientFactory
 @inject NavigationManager NavigationManager
@@ -14,84 +16,70 @@
 @if(tenants != null){
 
     <form @onsubmit="DetailSubmit">
-    
         <div class="form-group">
-
-        <lable>Name</lable>
-        <input type ="text" id="name" @bind-value="tenants.Name" placeholder="Name" />
-        <br />
+            <label>Name</label>
+            <input type="text" @bind="name" placeholder="Name" />
+            <br />
         </div>
         <div class="form-group">
-        <lable>Address</lable>
-        <input type ="text" id="address" @bind-value = "tenants.Address"  placeholder="Address" />
-        <br />
+            <label>Address</label>
+            <input type="text" @bind="address" placeholder="Address" />
+            <br />
         </div>
         <div class="form-group">
-        <lable>Url</lable>
-        <input type ="text" id="url"  @bind-value ="tenants.Url" placeholder="Url" />
-        <br />
+            <label>URL</label>
+            <input type="text" @bind="url" placeholder="URL" />
+            <br />
         </div>
         <div class="form-group">
-        <lable>Media Root Path</lable>
-            <input type="text" id="mediaRootPath" @bind-value="tenants.MediaRootPath" placeholder="Media Root Path" />
-        <br />
+            <label>Media Root Path</label>
+            <input type="text" @bind="mediaRootPath" placeholder="Media Root Path" />
+            <br />
         </div>
-        <!-- input ty"text"pe =e -->
-
-    
-
-        <div class="form-group">
-        <lable>Primary Color Hex Value</lable>
-            <input type="text" id="primaryColorHexValue" @bind-value="tenants.Scheme.PrimaryColor.HexValue" placeholder="Primary Color Hex Value" />
-        <br />
-        </div>
-
-
-        <div class="form-group">
-        <lable>Secondary Color Hex Value</lable>
-            <input type="text" id="secondaryColorHexValue" @bind-value="tenants.Scheme.SecondaryColor.HexValue" placeholder="Secondary Color Hex Value" />
-        <br />
-        </div>
-
-
         <!-- Features -->
         <div class="form-group ">
             <lable>Features</lable>
 
 
-                @if(getfeatures != null)
-                {
-                    <div class="check-features">
-                            @foreach (var feature in getfeatures)
-                            {
-                                <div >
-                                    <input type="checkbox" id="@($"feature{feature.Id}")" value="@($"feature{feature.Id}")" @bind = "feature.IsChecked" />
-                                <label for="@($"feature{feature.Id}")">@feature.Name</label>
-                                </div>
-                            }
-        
-                    </div>
-                }
+            @if (getfeatures != null)
+            {
+                <div class="check-features">
+                    @foreach (var feature in getfeatures)
+                    {
+                        <div>
+                            <input type="checkbox" id="@($"feature{feature.Id}")" value="@($"feature{feature.Id}")" @bind="feature.IsChecked" />
+                            <label for="@($"feature{feature.Id}")">@feature.Name</label>
+                        </div>
+                    }
+
+                </div>
+            }
 
 
         </div>
 
         <br />
-    
-
         <div class="form-group">
-        <lable>Primary Database</lable>
-            <input type="text" id="PrimaryDatabase" @bind-value="tenants.PrimaryDatabase.ConnectionString" placeholder="Primary Database" />
-        <br />
+            <label>Primary Color Hex Value</label>
+            <input type="text" @bind="primaryColorHexValue" placeholder="Primary Color Hex Value" />
+            <br />
         </div>
-
         <div class="form-group">
-        <lable>Secondary Database</lable>
-            <input type="text" id="SecondaryDatabase" @bind-value="tenants.SecondaryDatabase.ConnectionString" placeholder="Secondary Database" />
-        <br />
+            <label>Secondary Color Hex Value</label>
+            <input type="text" @bind="secondaryColorHexValue" placeholder="Secondary Color Hex Value" />
+            <br />
         </div>
-
-
+        <!-- Other form fields... -->
+        <div class="form-group">
+            <label>Primary Database</label>
+            <input type="text" @bind="primaryDatabase" placeholder="Primary Database" />
+            <br />
+        </div>
+        <div class="form-group">
+            <label>Secondary Database</label>
+            <input type="text" @bind="secondaryDatabase" placeholder="Secondary Database" />
+            <br />
+        </div>
         <button type="submit">Submit</button>
     </form>
 }
@@ -100,6 +88,7 @@
     [Parameter] public int id { get; set; }
 
     private HospitalTenant tenants;
+    private HospitalTenant sendTenants = new HospitalTenant();
 
 
     [Inject]
@@ -113,6 +102,8 @@
     }
 
     private FeatureViewModel[] getfeatures;
+    object tDatabase = new List<TenantDatabase>();
+
 
 
 
@@ -123,7 +114,7 @@
             var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
             // Api request to get list of all the features
-            var requestUri = "api/Tenants/Features";
+            var requestUri = "api/Tenants/Feature";
             getfeatures = await httpClient.GetFromJsonAsync<FeatureViewModel[]>(requestUri);
 
             // Api request to get Tenants Detail
@@ -142,13 +133,32 @@
                 }
             }
 
-            foreach (var feature in getfeatures)
+            if(tenants != null)
             {
-                Console.WriteLine(feature.IsChecked);
+
+                name = tenants.Name;
+                address = tenants.Address;
+                url = tenants.Url;
+                mediaRootPath = tenants.MediaRootPath;
+                scheme = tenants.Scheme;
+                primaryColorHexValue = tenants.Scheme.PrimaryColor.HexValue;
+                secondaryColorHexValue = tenants.Scheme.SecondaryColor.HexValue;
+
+
+                foreach(var database in tenants.Databases)
+                {
+                    Console.WriteLine(database.IsPrimary);
+                    if(database.IsPrimary)
+                    {
+                        primaryDatabase = database.ConnectionString;
+                    }
+                    else
+                    {
+                        secondaryDatabase = database.ConnectionString;
+                    }
+                }
+
             }
-
-
-
         }
         catch (HttpRequestException ex)
         {
@@ -158,16 +168,31 @@
     }
 
 
+    private string name;
+    private string address;
+    private string url;
+    private string mediaRootPath;
+    private Scheme scheme;
+
+    private string primaryColorHexValue;
+    private string secondaryColorHexValue;
+    private string primaryDatabase;
+    private string secondaryDatabase;
+
+
     async private void DetailSubmit()
     {
         if(tenants != null)
         {
 
             Console.WriteLine("Helloworld");
-            Console.WriteLine(tenants.Name);
 
-            tenants.Features = null;
-            tenants.Features = new List<Feature>();
+            sendTenants.Name = name;
+            sendTenants.Address = address;
+            sendTenants.Url = url;
+            sendTenants.MediaRootPath = mediaRootPath;
+
+            sendTenants.Features = new List<Feature>();
 
             foreach(var featuredata in getfeatures)
             {
@@ -184,18 +209,26 @@
                 }
             }
 
+            sendTenants.Scheme = scheme;
 
-            foreach(var featurename in tenants.Features)
+            sendTenants.Scheme.PrimaryColor.HexValue = primaryColorHexValue;
+            sendTenants.Scheme.SecondaryColor.HexValue = secondaryColorHexValue;
+
+            sendTenants.Databases = new Collection<TenantDatabase>()
             {
-                Console.WriteLine(featurename.Name);
-            }
+                new TenantDatabase(){IsPrimary = true, ConnectionString = primaryDatabase},
+                new TenantDatabase(){IsPrimary = false, ConnectionString= secondaryDatabase}
+
+            };
+
+            
 
             try
             {
                 var requestUri = $"api/Tenants/{id}";
                 var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
-                using var response = await httpClient.PutAsJsonAsync( requestUri, tenants);
+                using var response = await httpClient.PutAsJsonAsync( requestUri, sendTenants);
                 Console.WriteLine(response);
 
             }
