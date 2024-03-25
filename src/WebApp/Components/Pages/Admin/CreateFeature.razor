@@ -1,0 +1,57 @@
+﻿@page "/admin/features/new"
+@rendermode InteractiveServer
+@inject IHttpClientFactory ClientFactory
+@using hms.Tenant.API.Model;
+@inject NavigationManager NavigationManager
+
+
+<h3>CreateFeature</h3>
+
+<form @onsubmit = "FeatureSubmit">
+    <div class="form-group">
+        <label>Feature</label>
+        <input type="text" @bind="newFeature" placeholder="Feature" />
+        <br />
+    </div>
+    <button type="submit">Submit</button>
+
+</form>
+
+@code {
+    private string newFeature;
+
+    private Feature setFeature = new Feature();
+
+    [Inject]
+    private IHttpClientFactory _httpClientFactory { get; set; }
+
+    async private void FeatureSubmit()
+    {
+        Console.WriteLine(newFeature);
+        if(newFeature != null)
+        {
+            try
+            {
+                var requestUri = $"api/Tenants/Feature";
+                setFeature.Name = newFeature;
+
+                var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+                using var response = await httpClient.PostAsJsonAsync(requestUri, setFeature);
+                Console.WriteLine(response);
+
+                string requestUrl = "admin/features";
+
+                NavigationManager.NavigateTo(requestUrl);
+
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+
+            }
+
+        }
+    }
+
+}

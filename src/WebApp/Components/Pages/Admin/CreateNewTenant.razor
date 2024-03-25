@@ -114,7 +114,7 @@
             var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
             // Api request to get list of all the features
-            var requestUri = "api/Tenants/Features";
+            var requestUri = "api/Tenants/Feature";
             getfeatures = await httpClient.GetFromJsonAsync<FeatureViewModel[]>(requestUri);
 
             // Api request to get Tenants Detail
