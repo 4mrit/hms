@@ -1,0 +1,130 @@
+﻿@page "/admin/features/{id:int}"
+@inject IHttpClientFactory ClientFactory
+@using hms.Tenant.API.Model;
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+
+<h3>Feature</h3>
+<br />
+
+@if(feature != null)
+{
+    @if(editBool )
+    {
+        <form @onsubmit="UpdateFeature">
+            <div class="form-group">
+                <label>Feature</label>
+                <input type="text" 
+                     @bind="feature.Name"  />
+                <br />
+            </div>
+            <button type="submit">Submit</button>
+
+        </form>
+    }
+    else
+    {
+        
+        @feature.Name
+        <br />
+        <br />
+
+
+        <button @onclick="EditFeature">Edit</button>
+        <button @onclick = "DeleteFeature">Delete</button>
+    }
+
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    [Inject]
+    private IHttpClientFactory _httpClientFactory { get; set; }
+
+    private Feature feature = new Feature();
+
+    private string newFeature;
+
+    private bool editBool = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            // Api request to get list of all the features
+            var requestUri = $"api/Tenants/Feature/{id}";
+            feature = await httpClient.GetFromJsonAsync<Feature>(requestUri);
+
+            // Api request to get Tenants Detail
+
+
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+
+        }
+    }
+
+    private void EditFeature()
+    {
+        Console.WriteLine("edit");
+
+        editBool = true;
+
+    }
+
+    async private void UpdateFeature()
+    {
+        try
+        {
+            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+
+            // Api request to get list of all the features
+            editBool = false;
+            var requestUri = $"api/Tenants/Feature/{id}";
+            var response = await httpClient.PutAsJsonAsync(requestUri, feature);
+
+            
+
+            // NavigationManager.NavigateTo("admin/features");
+
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+
+        }
+    }
+
+    async private void DeleteFeature()
+    {
+        Console.WriteLine("Delete");
+        try
+        {
+            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            // Api request to get list of all the features
+            var requestUri = $"api/Tenants/Feature/{id}";
+            var response = await httpClient.DeleteAsync(requestUri);
+
+            Console.WriteLine(response);
+
+            NavigationManager.NavigateTo("admin/features");
+
+
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+
+        }
+    }
+}
