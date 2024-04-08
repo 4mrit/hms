@@ -12,13 +12,19 @@
 
 
 
+<br />
+<br />
+
+
 
     @if (getFeatures != null)
     {
         <div class="check-features">
             @foreach (var feature in getFeatures)
             {
-                <div>
+                <div 
+                    class ="individual-feature"
+                    onclick="window.location.href = window.location.href+'/@feature.Id';">
                     @* <input type="checkbox" id="@($"feature{feature.Id}")" value="@($"feature{feature.Id}")" @bind="feature.IsChecked" /> *@
                     <label for="@($"feature{feature.Id}")">@feature.Name</label>
                 </div>
