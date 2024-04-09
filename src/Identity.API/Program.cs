@@ -14,7 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder.Services.AddTransient<IAccountService, EFAccountService>();
+builder.Services
+    .AddTransient<IAccountService<ApplicationUser>, EFAccountService>();
 
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
@@ -22,13 +23,13 @@ builder.Services.AddAuthorizationBuilder();
 
 builder.AddMySqlDbContext<AppDbContext>("identitydb");
 
-builder.Services.AddIdentityCore<MyUser>()
+builder.Services.AddIdentityCore<ApplicationUser>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddApiEndpoints();
 
 var app = builder.Build();
 
-// app.MapIdentityApi<MyUser>();
+app.MapIdentityApi<ApplicationUser>();
 app.MapControllers();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
