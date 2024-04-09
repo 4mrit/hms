@@ -3,6 +3,8 @@
 @using hms.Tenant.API.Model;
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
+@using WebApp.Services;
+
 
 
 <h3>Feature</h3>
@@ -38,10 +40,8 @@
 }
 
 @code {
-    [Parameter] public int id { get; set; }
+        [Parameter] public int id { get; set; }
 
-    [Inject]
-    private IHttpClientFactory _httpClientFactory { get; set; }
 
     private Feature feature = new Feature();
 
@@ -49,15 +49,19 @@
 
     private bool editBool = false;
 
+    private ApiHelper helper;
+
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+            helper = new ApiHelper(ClientFactory, "MyHttpClient");
+            base.OnInitialized();
 
             // Api request to get list of all the features
             var requestUri = $"api/Tenants/Feature/{id}";
-            feature = await httpClient.GetFromJsonAsync<Feature>(requestUri);
+            feature = await helper.GetRequest<Feature>(requestUri);
 
             // Api request to get Tenants Detail
 
@@ -83,13 +87,13 @@
     {
         try
         {
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+            // var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
 
             // Api request to get list of all the features
             editBool = false;
             var requestUri = $"api/Tenants/Feature/{id}";
-            var response = await httpClient.PutAsJsonAsync(requestUri, feature);
+            var response = await helper.PutRequest<Feature>(requestUri, feature);
 
             
 
@@ -109,11 +113,10 @@
         Console.WriteLine("Delete");
         try
         {
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
             // Api request to get list of all the features
             var requestUri = $"api/Tenants/Feature/{id}";
-            var response = await httpClient.DeleteAsync(requestUri);
+            var response = await helper.DeleteRequest<Feature>(requestUri);
 
             Console.WriteLine(response);
 

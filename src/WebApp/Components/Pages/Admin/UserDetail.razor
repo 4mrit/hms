@@ -5,6 +5,7 @@
 @inject IHttpClientFactory ClientFactory
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
+@using WebApp.Services;
 
 
 <h3>UserDetail</h3>
@@ -90,21 +91,21 @@
 
     private string requestUri;
 
-    
+    private ApiHelper helper;
 
-    [Inject]
-    private IHttpClientFactory _httpClientFactory { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            helper = new ApiHelper(ClientFactory, "MyHttpClient");
+            base.OnInitialized();
+
             requestUri = $"/api/tenants/{id}";
             // URL for api request
 
             // Request an GET api
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
-            tenants = await httpClient.GetFromJsonAsync<HospitalTenant>(requestUri);
+            tenants = await helper.GetRequest<HospitalTenant>(requestUri);
 
 
 
@@ -128,19 +129,19 @@
 
     async private void DeleteButton()
     {
-        requestUri = $"/api/tenants/{id}";
-        var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+        try
+        {
+            requestUri = $"/api/tenants/{id}";
 
-        var response = await httpClient.DeleteAsync(requestUri);
-        if (response.IsSuccessStatusCode)
+            var response = await helper.DeleteRequest<HospitalTenant>(requestUri);
+
+            NavigationManager.NavigateTo("admin/tenants");
+        }catch(Exception ex)
         {
-            Console.WriteLine("Resource deleted successfully.");
-            NavigationManager.NavigateTo("/admin/tenants");
+            Console.WriteLine(ex.Message);
         }
-        else
-        {
-            Console.WriteLine($"Failed to delete resource. Status code: {response.StatusCode}");
-        }
+
+       
         Console.WriteLine("Delete button");
 
     }

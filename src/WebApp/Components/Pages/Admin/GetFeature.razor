@@ -3,6 +3,7 @@
 @inject IHttpClientFactory ClientFactory
 @using hms.Tenant.API.Model;
 @inject NavigationManager NavigationManager
+@using WebApp.Services;
 
 
 
@@ -42,8 +43,8 @@
 @code {
 
 
-    [Inject]
-    private IHttpClientFactory _httpClientFactory { get; set; }
+    private ApiHelper helper;
+
 
     private Feature[] getFeatures;
 
@@ -51,11 +52,13 @@
     {
         try
         {
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            helper = new ApiHelper(ClientFactory, "MyHttpClient");
+            base.OnInitialized();
 
             // Api request to get list of all the features
             var requestUri = "api/Tenants/Feature";
-            getFeatures = await httpClient.GetFromJsonAsync<Feature[]>(requestUri);
+            getFeatures = await helper.GetRequest<Feature[]>(requestUri);
 
             // Api request to get Tenants Detail
 

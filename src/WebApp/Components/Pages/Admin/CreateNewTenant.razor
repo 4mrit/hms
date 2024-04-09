@@ -6,6 +6,8 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject HttpClient Http
+@using WebApp.Services;
+
 
 
 
@@ -95,8 +97,8 @@
 
 
 
-    [Inject]
-    private IHttpClientFactory _httpClientFactory { get; set; }
+
+    private ApiHelper helper;
 
     public class FeatureViewModel
     {
@@ -111,11 +113,14 @@
     {
         try
         {
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            helper = new ApiHelper(ClientFactory, "MyHttpClient");
+            base.OnInitialized();
+
 
             // Api request to get list of all the features
             var requestUri = "api/Tenants/Feature";
-            getfeatures = await httpClient.GetFromJsonAsync<FeatureViewModel[]>(requestUri);
+            getfeatures = await helper.GetRequest<FeatureViewModel[]>(requestUri);
 
             // Api request to get Tenants Detail
 
@@ -185,10 +190,10 @@
         try
         {
             var requestUri = "api/Tenants/";
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
-            using var response = await httpClient.PostAsJsonAsync(requestUri, tenants);
+            var response = await helper.PostRequest<HospitalTenant>(requestUri, tenants);
             Console.WriteLine("Form data submitted successfully!");
+            NavigationManager.NavigateTo("admin/tenants");
 
         }
         catch (HttpRequestException ex)

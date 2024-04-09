@@ -3,6 +3,7 @@
 @using hms.Tenant.API.Model;
 @inject IHttpClientFactory ClientFactory
 @using System.Net.Http.Json
+@using WebApp.Services;
 
 
 <PageTitle> Admin Panel</PageTitle>
@@ -55,13 +56,17 @@ else
 @code {
     private HospitalTenant[] Tenants;
 
-    private const string RequestUri = "api/Tenants";
+
+    private ApiHelper helper;
+
 
     protected override async Task OnInitializedAsync()
     {
-        var client = ClientFactory.CreateClient("MyHttpClient");
+        string requestUri = "api/Tenants";
+        helper = new ApiHelper(ClientFactory, "MyHttpClient");
+        base.OnInitialized();
 
-        Tenants = await client.GetFromJsonAsync<HospitalTenant[]>(RequestUri);
+        Tenants = await helper.GetRequest<HospitalTenant[]>(requestUri);
         
     }
 

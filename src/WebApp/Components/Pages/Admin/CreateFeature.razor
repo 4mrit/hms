@@ -3,6 +3,7 @@
 @inject IHttpClientFactory ClientFactory
 @using hms.Tenant.API.Model;
 @inject NavigationManager NavigationManager
+@using WebApp.Services;
 
 
 <h3>CreateFeature</h3>
@@ -22,8 +23,8 @@
 
     private Feature setFeature = new Feature();
 
-    [Inject]
-    private IHttpClientFactory _httpClientFactory { get; set; }
+    private ApiHelper helper;
+
 
     async private void FeatureSubmit()
     {
@@ -32,11 +33,13 @@
         {
             try
             {
+                helper = new ApiHelper(ClientFactory, "MyHttpClient");
+                base.OnInitialized();
+
                 var requestUri = $"api/Tenants/Feature";
                 setFeature.Name = newFeature;
 
-                var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
-                using var response = await httpClient.PostAsJsonAsync(requestUri, setFeature);
+                var response = await helper.PostRequest<Feature>(requestUri, setFeature);
                 Console.WriteLine(response);
 
                 string requestUrl = "admin/features";
