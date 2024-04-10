@@ -1,4 +1,6 @@
 namespace hms.Identity.API.Services;
-public interface IAccountService<T> {
+public interface IAccountService<T>
+{
   public Task SignIn(string userName, string Password);
+  public Task Register(T user, string Password);
 }

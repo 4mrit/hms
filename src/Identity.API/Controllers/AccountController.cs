@@ -5,18 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 namespace hms.Identity.API.Controllers;
 [Route("[controller]")]
 [ApiController]
-public class AccountController : ControllerBase {
+public class AccountController : ControllerBase
+{
   private IAccountService<ApplicationUser> _accountService { get; }
 
-  public AccountController(IAccountService<ApplicationUser> accountService) {
+  public AccountController(IAccountService<ApplicationUser> accountService)
+  {
     this._accountService = accountService;
   }
 
   [HttpPost("register")]
-  public async Task<string> Register() { return "register"; }
+  public async Task Register(ApplicationUser user, string password)
+  {
+    await _accountService.Register(user, password);
+    return;
+  }
 
   [HttpPost("login/")]
-  public async Task Login(string userName, string Password) {
+  public async Task Login(string userName, string Password)
+  {
     await _accountService.SignIn(userName, Password);
     return;
   }
