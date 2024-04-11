@@ -19,15 +19,15 @@ public class EFAccountService
     _userManager = userManager;
   }
 
-  private async Task<SignInResult> SignInUsingUserNameAsync(string userName,
-                                                            string Password)
+  public async Task<SignInResult> SignInUsingUserNameAsync(string userName,
+                                                           string Password)
   {
     return await _signInManager.PasswordSignInAsync(userName, Password, false,
                                                     false);
   }
 
-  private async Task<SignInResult> SignInUsingEmailAsync(string Email,
-                                                         string Password)
+  public async Task<SignInResult> SignInUsingEmailAsync(string Email,
+                                                        string Password)
   {
     if (!_userManager.SupportsUserEmail)
       throw new NotSupportedException(
