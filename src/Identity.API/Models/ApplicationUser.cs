@@ -9,6 +9,20 @@ namespace hms.Identity.API.Models;
 // }
 public class ApplicationUser : IdentityUser { }
 
+public class ApplicationUserLoginDTO
+{
+  public string EmailOrUserName { get; set; } = null!;
+  public string Password { get; set; } = null!;
+}
+
+public class ApplicationUserRegisterDTO
+{
+  public string? Email { get; set; } = null!;
+  public string? UserName { get; set; } = null!;
+  public string Password { get; set; } = null!;
+  public string? PhoneNumber { get; set; }
+}
+
 public class ApplicationUserRequestDTO
 {
   public string EmailOrUserName { get; set; } = null!;
