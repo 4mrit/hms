@@ -6,6 +6,11 @@
         {
             <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.AdminLayout)" />
         }
+        else if (routeData.PageType.FullName.Contains("Login"))
+        {
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.LoginLayout)" />
+
+        }
         else
         {
             <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />

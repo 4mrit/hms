@@ -4,3 +4,11 @@
     display : grid;
     grid-template-columns: auto auto auto auto;
 }
+
+.individual-feature {
+    height: 30px;
+}
+
+    .individual-feature:hover {
+        background-color: rgb(238 238 238 / 0.48);
+    }

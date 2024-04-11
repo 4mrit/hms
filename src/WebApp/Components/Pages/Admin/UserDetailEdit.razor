@@ -6,6 +6,7 @@
 @using hms.Tenant.API.Model;
 @inject IHttpClientFactory ClientFactory
 @inject NavigationManager NavigationManager
+@using WebApp.Services;
 @rendermode InteractiveServer
 @using Microsoft.AspNetCore.Components.Forms
 @inject HttpClient Http
@@ -91,9 +92,6 @@
     private HospitalTenant sendTenants = new HospitalTenant();
 
 
-    [Inject]
-    private IHttpClientFactory _httpClientFactory { get; set; }
-
     public class FeatureViewModel
     {
         public int Id { get; set; }
@@ -106,20 +104,34 @@
 
 
 
+    private ApiHelper helper;
+
+    // public UserDetailEdit(ApiHelper helper)
+    // {
+    //     this.helper = helper;
+    // }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+
+            helper = new ApiHelper(ClientFactory, "MyHttpClient");   
+            base.OnInitialized();
+
+            var requestUri = "api/Tenants/Feature";
+            getfeatures = await helper.GetRequest<FeatureViewModel[]>(requestUri);
+            Console.WriteLine(getfeatures);
+
+            // var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
 
             // Api request to get list of all the features
-            var requestUri = "api/Tenants/Feature";
-            getfeatures = await httpClient.GetFromJsonAsync<FeatureViewModel[]>(requestUri);
+            // getfeatures = await httpClient.GetFromJsonAsync<FeatureViewModel[]>(requestUri);
 
             // Api request to get Tenants Detail
             requestUri = $"/api/tenants/{id}";
-            tenants = await httpClient.GetFromJsonAsync<HospitalTenant>(requestUri);
+            tenants = await helper.GetRequest<HospitalTenant>(requestUri);
+            // await httpClient.GetFromJsonAsync<HospitalTenant>(requestUri);
 
 
             foreach(var feature in getfeatures)
@@ -221,14 +233,17 @@
 
             };
 
-            
+
 
             try
             {
                 var requestUri = $"api/Tenants/{id}";
-                var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+                // var httpClient = _httpClientFactory.CreateClient("MyHttpClient");
+                Console.WriteLine(sendTenants);
+                var response = await helper.PutRequest<HospitalTenant>(requestUri, sendTenants);
+                // httpClient.PutAsJsonAsync( requestUri, sendTenants);
+                NavigationManager.NavigateTo($"admin/tenants/{id}");
 
-                using var response = await httpClient.PutAsJsonAsync( requestUri, sendTenants);
                 Console.WriteLine(response);
 
             }
