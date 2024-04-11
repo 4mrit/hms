@@ -23,7 +23,10 @@ builder.Services.AddAuthorizationBuilder();
 
 builder.AddMySqlDbContext<AppDbContext>("identitydb");
 
-builder.Services.AddIdentityCore<ApplicationUser>()
+builder.Services
+    .AddIdentityCore<ApplicationUser>(options => {
+      options.User.RequireUniqueEmail = true;
+    })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddApiEndpoints();
 
