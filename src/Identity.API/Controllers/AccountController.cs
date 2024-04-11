@@ -30,21 +30,21 @@ public class AccountController : ControllerBase
   [HttpPost("login/email/")]
   public async Task LoginEmail(string userName, string Password)
   {
-    await _accountService.SignInUsingEmail(userName, Password);
+    await _accountService.SignInUsingEmailAsync(userName, Password);
     return;
   }
 
   [HttpPost("login/username/")]
-  public async Task LoginUserName(string userName, string Password)
+  public async Task LoginUserNameAsync(string userName, string Password)
   {
-    await _accountService.SignInUsingUserName(userName, Password);
+    await _accountService.SignInUsingUserNameAsync(userName, Password);
     return;
   }
 
   [HttpPost("login/")]
   public async Task Login(ApplicationUserRequestDTO user)
   {
-    await _accountService.SignInUsingUserNameOrEmail(user);
+    await _accountService.SignInUsingUserNameOrEmailAsync(user);
     return;
   }
 

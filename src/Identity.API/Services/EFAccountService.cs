@@ -19,39 +19,39 @@ public class EFAccountService
     _userManager = userManager;
   }
 
-  public Task SignInUsingUserName(string userName, string Password)
+  public async Task<SignInResult> SignInUsingUserNameAsync(string userName,
+                                                           string Password)
   {
-    var user = new ApplicationUser() { UserName = userName };
-    return _signInManager.PasswordSignInAsync(userName, Password, false, false);
-    // return _signInManager.PasswordSignInAsync(userName, Password, false,
-    // false);
+    return await _signInManager.PasswordSignInAsync(userName, Password, false,
+                                                    false);
   }
 
-  public async Task SignInUsingEmail(string Email, string Password)
+  public async Task<SignInResult> SignInUsingEmailAsync(string Email,
+                                                        string Password)
   {
-    ApplicationUser user;
-    user = await _userManager.FindByEmailAsync(Email);
+    if (!_userManager.SupportsUserEmail)
+      throw new NotSupportedException(
+          $"{nameof(SignInUsingEmailAsync)} requires a user store with email support.");
+
+    var user = await _userManager.FindByEmailAsync(Email);
     if (user is null)
-      throw new Exception("user not found , email : " + Email);
-    await _signInManager.PasswordSignInAsync(user, Password, false, false);
-    return;
+      throw new ValidationException("user not found , email : " + Email);
+
+    return await _signInManager.PasswordSignInAsync(
+        user, Password, isPersistent: false, lockoutOnFailure: false);
   }
 
-  public async Task SignInUsingUserNameOrEmail(ApplicationUserRequestDTO user)
+  public async Task<SignInResult>
+  SignInUsingUserNameOrEmailAsync(ApplicationUserRequestDTO user)
   {
-
     if (string.IsNullOrEmpty(user.EmailOrUserName))
       throw new ValidationException("Email or Username Required !!");
 
     if (_emailAddressAttribute.IsValid(user.EmailOrUserName))
-    {
-      await SignInUsingEmail(user.EmailOrUserName, user.Password);
-    }
+      return await SignInUsingEmailAsync(user.EmailOrUserName, user.Password);
     else
-    {
-      await SignInUsingUserName(user.EmailOrUserName, user.Password);
-    }
-    return;
+      return await SignInUsingUserNameAsync(user.EmailOrUserName,
+                                            user.Password);
   }
 
   public Task Register(ApplicationUser user, string Password)
