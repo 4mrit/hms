@@ -27,7 +27,6 @@ namespace WebApp.Services
 
         public async Task<T> PostRequest<T>(string apiPath, T data)
         {
-            //T response;
             T obj;
 
             var response = await _httpClient.PostAsJsonAsync(apiPath, data);
