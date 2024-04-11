@@ -15,7 +15,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services
-    .AddTransient<IAccountService<ApplicationUser>, EFAccountService>();
+    .AddTransient<IAccountService<ApplicationUser, ApplicationUserRequestDTO,
+                                  ApplicationUserResponseDTO>,
+                  EFAccountService>();
 
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
@@ -24,7 +26,8 @@ builder.Services.AddAuthorizationBuilder();
 builder.AddMySqlDbContext<AppDbContext>("identitydb");
 
 builder.Services
-    .AddIdentityCore<ApplicationUser>(options => {
+    .AddIdentityCore<ApplicationUser>(options =>
+    {
       options.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<AppDbContext>()
@@ -35,7 +38,8 @@ var app = builder.Build();
 app.MapIdentityApi<ApplicationUser>();
 app.MapControllers();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment())
+{
   app.UseSwagger();
   app.UseSwaggerUI();
 }
