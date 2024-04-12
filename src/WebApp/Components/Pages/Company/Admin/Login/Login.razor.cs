@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApp.Components.Pages.Login
+namespace WebApp.Components.Pages.Company.Admin.Login
 {
     public partial class Login
     {

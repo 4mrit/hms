@@ -2,18 +2,19 @@
     <Found Context="routeData">
         
 
-        @if (routeData.PageType.FullName.Contains("Admin"))
+        @if (routeData.PageType.FullName.Contains("WebApp.Components.Pages.Company.Admin.Login"))
+        
         {
-            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.AdminLayout)" />
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.Company.Admin.Login.LoginLayout)" />
         }
-        else if (routeData.PageType.FullName.Contains("Login"))
+        else if (routeData.PageType.FullName.Contains("WebApp.Components.Pages.Company.Admin"))
         {
-            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.LoginLayout)" />
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.Company.Admin.AdminLayout)" />
 
         }
         else
         {
-            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.Company.Admin.MainLayout)" />
         }
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>

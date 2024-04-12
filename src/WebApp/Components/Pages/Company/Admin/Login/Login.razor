@@ -1,0 +1,25 @@
+﻿@page "/admin"
+@rendermode InteractiveServer
+
+<PageTitle> Login</PageTitle>
+
+<div class="login-container">
+    <form class="login-form" @onsubmit="HandleLogin">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input class="input-section" type="text" id="username" @bind="Username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input class="input-section" type="password" id="password" @bind="Password" required>
+        </div>
+        <div class="form-group">
+            <input class="input-section"  type="submit" value="Log in" >
+
+        </div>
+        <div class="forgot-password">
+            <a href="/login/forgot-password">Forgot password?</a>
+        </div>
+    </form>
+</div>
+

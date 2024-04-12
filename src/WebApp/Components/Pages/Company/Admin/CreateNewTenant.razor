@@ -6,8 +6,9 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 @inject HttpClient Http
-@using WebApp.Services;
+@using WebApp.Services; 
 
+@inject WebApp.Services.ApiHelper apiHelper;
 
 
 
@@ -96,7 +97,7 @@
     private HospitalTenant tenants  = new HospitalTenant();
 
 
-
+    
 
     private ApiHelper helper;
 
@@ -106,6 +107,8 @@
         public string Name { get; set; }
         public bool IsChecked { get; set; }
     }
+    
+    
 
     private FeatureViewModel[] getfeatures;
 
@@ -113,7 +116,7 @@
     {
         try
         {
-
+            
             helper = new ApiHelper(ClientFactory, "MyHttpClient");
             base.OnInitialized();
 
