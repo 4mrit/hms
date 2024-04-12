@@ -52,9 +52,8 @@ public class AccountController : ControllerBase {
   public async Task<string> ForgotPassword() { return "forgot password"; }
 
   [HttpPost("changePassword")]
-  public async Task ChangePassword(string emailOrUserName, string oldPassword,
-                                   string newPassword) {
-    await _accountService.ChangePassword(emailOrUserName, oldPassword,
-                                         newPassword);
+  public async Task ChangePassword(ApplicationUserChangePasswordDTO user) {
+    await _accountService.ChangePassword(user.EmailOrUserName, user.OldPassword,
+                                         user.NewPassword);
   }
 }
