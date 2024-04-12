@@ -1,6 +1,5 @@
 namespace hms.Identity.API.Services;
-public interface IAccountService<T, TRequest, TResponse>
-{
+public interface IAccountService<T, TLogin, TRegister> {
   public Task<Microsoft.AspNetCore.Identity.SignInResult>
   SignInUsingUserNameAsync(string userName, string Password);
 
@@ -8,8 +7,10 @@ public interface IAccountService<T, TRequest, TResponse>
   SignInUsingEmailAsync(string userName, string Password);
 
   public Task<Microsoft.AspNetCore.Identity.SignInResult>
-  SignInUsingUserNameOrEmailAsync(TRequest request);
+  SignInUsingUserNameOrEmailAsync(TLogin request);
 
-  public Task Register(T user, string Password);
-  public Task ChangePassword(T user, string oldPassword, string newPassword);
+  public Task Register(TRegister user);
+  public Task<Microsoft.AspNetCore.Identity.IdentityResult>
+  ChangePassword(string emailOrUserName, string oldPassword,
+                 string newPassword);
 }

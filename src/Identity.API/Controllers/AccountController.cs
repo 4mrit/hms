@@ -1,29 +1,27 @@
 using hms.Identity.API.Services;
 using hms.Identity.API.Models;
+using hms.Identity.API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace hms.Identity.API.Controllers;
 [Route("[controller]")]
 [ApiController]
-public class AccountController : ControllerBase
-{
-  private IAccountService<ApplicationUser, ApplicationUserRequestDTO,
-                          ApplicationUserResponseDTO> _accountService
-  {
+public class AccountController : ControllerBase {
+  private IAccountService<ApplicationUser, ApplicationUserLoginDTO,
+                          ApplicationUserRegisterDTO> _accountService {
     get;
   }
 
   public AccountController(
-      IAccountService<ApplicationUser, ApplicationUserRequestDTO,
-                      ApplicationUserResponseDTO> accountService)
-  {
+      IAccountService<ApplicationUser, ApplicationUserLoginDTO,
+                      ApplicationUserRegisterDTO> accountService) {
     this._accountService = accountService;
   }
 
   [HttpPost("register")]
-  public async Task Register(ApplicationUser user, string password)
-  {
-    await _accountService.Register(user, password);
+  public async Task Register(ApplicationUserRegisterDTO user) {
+    await _accountService.Register(user);
+    // await _accountService.Register(new ApplicationUserResponseDTO());
     return;
   }
 
@@ -42,8 +40,7 @@ public class AccountController : ControllerBase
   // }
 
   [HttpPost("login/")]
-  public async Task Login(ApplicationUserRequestDTO user)
-  {
+  public async Task Login(ApplicationUserLoginDTO user) {
     await _accountService.SignInUsingUserNameOrEmailAsync(user);
     return;
   }
@@ -55,9 +52,8 @@ public class AccountController : ControllerBase
   public async Task<string> ForgotPassword() { return "forgot password"; }
 
   [HttpPost("changePassword")]
-  public async Task ChangePassword(ApplicationUser user, string oldPassword,
-                                   string newPassword)
-  {
-    await _accountService.ChangePassword(user, oldPassword, newPassword);
+  public async Task ChangePassword(ApplicationUserChangePasswordDTO user) {
+    await _accountService.ChangePassword(user.EmailOrUserName, user.OldPassword,
+                                         user.NewPassword);
   }
 }
