@@ -1,5 +1,6 @@
 using hms.Identity.API.Services;
 using hms.Identity.API.Models;
+using hms.Identity.API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace hms.Identity.API.Controllers;

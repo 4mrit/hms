@@ -1,6 +1,6 @@
 using hms.Identity.API.Models;
 using Microsoft.AspNetCore.Identity;
-
+using hms.Identity.API.DTOs;
 using System.ComponentModel.DataAnnotations;
 namespace hms.Identity.API.Services;
 

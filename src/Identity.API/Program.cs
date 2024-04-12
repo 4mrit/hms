@@ -5,6 +5,7 @@ using Aspire.Pomelo.EntityFrameworkCore.MySql;
 using hms.Identity.API.Data;
 using hms.Identity.API.Models;
 using hms.Identity.API.Services;
+using hms.Identity.API.DTOs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,8 +27,7 @@ builder.Services.AddAuthorizationBuilder();
 builder.AddMySqlDbContext<AppDbContext>("identitydb");
 
 builder.Services
-    .AddIdentityCore<ApplicationUser>(options =>
-    {
+    .AddIdentityCore<ApplicationUser>(options => {
       options.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<AppDbContext>()
@@ -38,8 +38,7 @@ var app = builder.Build();
 app.MapIdentityApi<ApplicationUser>();
 app.MapControllers();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()) {
   app.UseSwagger();
   app.UseSwaggerUI();
 }
