@@ -15,8 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services
-    .AddTransient<IAccountService<ApplicationUser, ApplicationUserRequestDTO,
-                                  ApplicationUserResponseDTO>,
+    .AddTransient<IAccountService<ApplicationUser, ApplicationUserLoginDTO,
+                                  ApplicationUserRegisterDTO>,
                   EFAccountService>();
 
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
