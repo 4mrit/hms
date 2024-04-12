@@ -1,0 +1,33 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+<PageTitle> Register</PageTitle>
+
+
+<div class="register-container">
+    <form class="register-form">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" @bind="Username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" @bind="Email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" @bind="PhoneNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" @bind="Password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" @bind="ConfirmPassword" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Register" @onclick="HandleRegister">
+        </div>
+    </form>
+</div>
+

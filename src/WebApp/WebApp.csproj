@@ -16,4 +16,8 @@
 		<ProjectReference Include="..\Tenant.API\Tenant.API.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Components\Layout\Tenant\" />
+	</ItemGroup>
+
 </Project>

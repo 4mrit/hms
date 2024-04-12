@@ -7,7 +7,10 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 // builder.Services.AddHttpClient();
 
-builder.Services.AddHttpClient("MyHttpClient", client => {
+
+builder.Services.AddHttpClient("MyHttpClient", client =>
+{
+
   client.BaseAddress = new Uri("http://tenant-api");
 });
 
