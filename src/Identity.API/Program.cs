@@ -25,7 +25,7 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
 builder.Services.AddAuthorization(options =>
 {
-  options.AddPolicy(ApplicationPolicy.Administrator,
+  options.AddPolicy(ApplicationPolicy.Administrators,
                     policy => policy.RequireClaim(ApplicationClaims.Role,
                                                   ApplicationRoles.SuperAdmin,
                                                   ApplicationRoles.Admin));
