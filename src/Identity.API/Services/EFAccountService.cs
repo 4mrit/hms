@@ -62,6 +62,22 @@ public class EFAccountService
 
     return _userManager.CreateAsync(user, userDTO.Password);
   }
+  public Task RegisterAdmin(ApplicationUserRegisterDTO userDTO) {
+
+    if (string.IsNullOrEmpty(userDTO.Email) &&
+        string.IsNullOrEmpty(userDTO.UserName)) {
+      throw new ValidationException(
+          "UserName or Email Required for User Registration");
+    }
+
+    var user = new ApplicationUser() { UserName = userDTO.UserName,
+                                       Email = userDTO.Email,
+                                       PhoneNumber = userDTO.PhoneNumber };
+
+    _userManager.CreateAsync(user, userDTO.Password);
+    return _userManager.AddClaimAsync(
+        user, new System.Security.Claims.Claim("role", "admin"));
+  }
 
   public async Task<IdentityResult> ChangePassword(string emailOrUserName,
                                                    string oldPassword,
@@ -81,5 +97,12 @@ public class EFAccountService
     } else {
       return await _userManager.FindByNameAsync(emailOrUserName);
     }
+  }
+
+  public async Task<IList<System.Security.Claims.Claim>>
+  GetClaimsUserUsingUserName(string userName) {
+
+    return await _userManager.GetClaimsAsync(
+        await _userManager.FindByNameAsync(userName));
   }
 }

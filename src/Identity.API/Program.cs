@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Aspire.Pomelo.EntityFrameworkCore.MySql;
+using hms.Identity.API.Authorization.Constants;
 using hms.Identity.API.Data;
 using hms.Identity.API.Models;
 using hms.Identity.API.Services;
@@ -22,12 +23,19 @@ builder.Services
 
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
-builder.Services.AddAuthorizationBuilder();
+builder.Services.AddAuthorization(options =>
+{
+  options.AddPolicy(ApplicationPolicy.Administrator,
+                    policy => policy.RequireClaim(ApplicationClaims.Role,
+                                                  ApplicationRoles.SuperAdmin,
+                                                  ApplicationRoles.Admin));
+});
 
 builder.AddMySqlDbContext<AppDbContext>("identitydb");
 
 builder.Services
-    .AddIdentityCore<ApplicationUser>(options => {
+    .AddIdentityCore<ApplicationUser>(options =>
+    {
       options.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<AppDbContext>()
@@ -38,7 +46,8 @@ var app = builder.Build();
 app.MapIdentityApi<ApplicationUser>();
 app.MapControllers();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
+if (app.Environment.IsDevelopment())
+{
   app.UseSwagger();
   app.UseSwaggerUI();
 }

@@ -24,7 +24,12 @@ public class AccountController : ControllerBase {
     // await _accountService.Register(new ApplicationUserResponseDTO());
     return;
   }
-
+  [HttpPost("registerAdmin")]
+  public async Task RegisterAdmin(ApplicationUserRegisterDTO user) {
+    await _accountService.RegisterAdmin(user);
+    // await _accountService.Register(new ApplicationUserResponseDTO());
+    return;
+  }
   // [HttpPost("login/email/")]
   // public async Task LoginEmail(string userName, string Password)
   // {
@@ -38,6 +43,11 @@ public class AccountController : ControllerBase {
   //   await _accountService.SignInUsingUserNameAsync(userName, Password);
   //   return;
   // }
+  [HttpGet("getClaims")]
+  public async Task<IList<System.Security.Claims.Claim>>
+  GetClaims(string userName) {
+    return await _accountService.GetClaimsUserUsingUserName(userName);
+  }
 
   [HttpPost("login/")]
   public async Task Login(ApplicationUserLoginDTO user) {
