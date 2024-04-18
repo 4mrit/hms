@@ -1,5 +1,6 @@
 namespace hms.Identity.API.Services;
-public interface IAccountService<T, TLogin, TRegister> {
+public interface IAccountService<T, TLogin, TRegister>
+{
   public Task<Microsoft.AspNetCore.Identity.SignInResult>
   SignInUsingUserNameAsync(string userName, string Password);
 
@@ -19,4 +20,8 @@ public interface IAccountService<T, TLogin, TRegister> {
 
   public Task<IList<System.Security.Claims.Claim>>
   GetClaimsUserUsingUserName(string userName);
+
+  public Task<string> ForgetPassword(string Email);
+  public Task<string> ResetPassword(string Email, string Token,
+                                    string NewPassword);
 }
