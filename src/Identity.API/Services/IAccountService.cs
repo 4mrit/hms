@@ -3,15 +3,12 @@ public interface IAccountService<T, TLogin, TRegister>
 {
   public Task<Microsoft.AspNetCore.Identity.SignInResult>
   SignInUsingUserNameAsync(string userName, string Password);
-
   public Task<Microsoft.AspNetCore.Identity.SignInResult>
   SignInUsingEmailAsync(string userName, string Password);
-
   public Task<Microsoft.AspNetCore.Identity.SignInResult>
   SignInUsingUserNameOrEmailAsync(TLogin request);
 
   public Task Register(TRegister user);
-
   public Task RegisterAdmin(TRegister user);
 
   public Task<Microsoft.AspNetCore.Identity.IdentityResult>
@@ -24,4 +21,6 @@ public interface IAccountService<T, TLogin, TRegister>
   public Task<string> ForgetPassword(string Email);
   public Task<string> ResetPassword(string Email, string Token,
                                     string NewPassword);
+  public Task<string> SendConfirmationEmail(string Email);
+  public Task<string> ConfirmEmail(string userId, string code);
 }

@@ -3,13 +3,13 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <AspireVersion>8.0.0-preview.2.23619.3</AspireVersion>
     <EntityFrameworkCoreVersion>8.0.1</EntityFrameworkCoreVersion>
-
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-preview.2.23619.3" />
     <PackageVersion Include="AutoMapper" Version="13.0.1" />
     <PackageVersion Include="Bogus" Version="35.5.0" />
+    <PackageVersion Include="MailKit" Version="4.5.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(EntityFrameworkCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EntityFrameworkCoreVersion)" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />

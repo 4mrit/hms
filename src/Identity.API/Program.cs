@@ -21,6 +21,8 @@ builder.Services
                                   ApplicationUserRegisterDTO>,
                   EFAccountService>();
 
+builder.Services.AddTransient<IEmailSender, SMTPEmailSender>();
+
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
 builder.Services.AddAuthorization(options =>

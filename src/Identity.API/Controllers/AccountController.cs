@@ -6,61 +6,84 @@ using Microsoft.AspNetCore.Authorization;
 namespace hms.Identity.API.Controllers;
 [Route("[controller]")]
 [ApiController]
-public class AccountController : ControllerBase {
+public class AccountController : ControllerBase
+{
   private IAccountService<ApplicationUser, ApplicationUserLoginDTO,
-                          ApplicationUserRegisterDTO> _accountService {
+                          ApplicationUserRegisterDTO> _accountService
+  {
     get;
   }
   public AccountController(
       IAccountService<ApplicationUser, ApplicationUserLoginDTO,
-                      ApplicationUserRegisterDTO> accountService) {
+                      ApplicationUserRegisterDTO> accountService)
+  {
     this._accountService = accountService;
   }
 
   [AllowAnonymous]
   [HttpPost("register")]
-  public async Task Register(ApplicationUserRegisterDTO user) {
+  public async Task Register(ApplicationUserRegisterDTO user)
+  {
     await _accountService.Register(user);
     return;
   }
 
   // [Authorize(Policy = ApplicationPolicy.Administrator)]
   [HttpPost("register/admin")]
-  public async Task RegisterAdmin(ApplicationUserRegisterDTO user) {
+  public async Task RegisterAdmin(ApplicationUserRegisterDTO user)
+  {
     await _accountService.RegisterAdmin(user);
     return;
   }
 
   [AllowAnonymous]
   [HttpPost("login/")]
-  public async Task Login(ApplicationUserLoginDTO user) {
+  public async Task Login(ApplicationUserLoginDTO user)
+  {
     await _accountService.SignInUsingUserNameOrEmailAsync(user);
     return;
   }
 
   [HttpGet("getClaims")]
   public async Task<IList<System.Security.Claims.Claim>>
-  GetClaims(string userName) {
+  GetClaims(string userName)
+  {
     return await _accountService.GetClaimsUserUsingUserName(userName);
   }
 
   [HttpPost("changePassword")]
-  public async Task ChangePassword(ApplicationUserChangePasswordDTO user) {
+  public async Task ChangePassword(ApplicationUserChangePasswordDTO user)
+  {
     await _accountService.ChangePassword(user.EmailOrUserName, user.OldPassword,
                                          user.NewPassword);
   }
 
   [HttpPost("forgotPassword")]
   public async Task<string>
-  ForgotPassword(ApplicationUserForgetPasswordDTO user) {
+  ForgotPassword(ApplicationUserForgetPasswordDTO user)
+  {
     var link = await _accountService.ForgetPassword(user.Email);
     return link;
   }
 
   [HttpPost("resetPassword")]
   public async Task<string>
-  ResetPassword(ApplicationUserResetPasswordDTO request) {
+  ResetPassword(ApplicationUserResetPasswordDTO request)
+  {
     return await _accountService.ResetPassword(request.Email, request.Token,
                                                request.Password);
+  }
+
+  [HttpPost("sendConfirmationEmail")]
+  public async Task<string> SendConfirmationEmail(string email)
+  {
+    return await _accountService.SendConfirmationEmail(email);
+  }
+
+  [HttpGet("confirmEmail")]
+  public async Task<string> ConfirmEmail(string userId, string code)
+  {
+    var result = await _accountService.ConfirmEmail(userId, code);
+    return "Thank you for confirming your email";
   }
 }
