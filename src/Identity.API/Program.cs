@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Aspire.Pomelo.EntityFrameworkCore.MySql;
 using hms.Identity.API.Authorization.Constants;
 using hms.Identity.API.Data;
 using hms.Identity.API.Models;
@@ -18,9 +15,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services
-    .AddTransient<IAccountService<ApplicationUser, ApplicationUserLoginDTO,
-                                  ApplicationUserRegisterDTO>,
-                  EFAccountService>();
+    .AddTransient<ILoginService<ApplicationUserLoginDTO>, EFLoginService>();
+builder.Services.AddTransient<IPasswordService, EFPasswordService>();
+builder.Services.AddTransient<IRegisterService<ApplicationUserRegisterDTO>,
+                              EFRegisterService>();
+builder.Services
+    .AddTransient<IUserInformationService, EFUserInformationService>();
+builder.Services.AddTransient<IAccountEmailService, EFAccountEmailService>();
 
 builder.Services.AddTransient<IEmailSender, SMTPEmailSender>();
 
