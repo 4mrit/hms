@@ -1,8 +1,7 @@
 using MailKit.Net.Smtp;
-using MailKit;
 using MimeKit;
 using MailKit.Security;
-
+using hms.Identity.API.Services.Interfaces;
 // using System.Net.Mail;
 // using System.Net;
 

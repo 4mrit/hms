@@ -1,4 +1,4 @@
-namespace hms.Identity.API.Services;
+namespace hms.Identity.API.Services.Interfaces;
 public interface IAccountService<T, TLogin, TRegister>
 {
   public Task<Microsoft.AspNetCore.Identity.SignInResult>

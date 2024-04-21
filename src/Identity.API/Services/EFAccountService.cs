@@ -6,6 +6,7 @@ using hms.Identity.API.Authorization.Constants;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
+using hms.Identity.API.Services.Interfaces;
 
 namespace hms.Identity.API.Services;
 

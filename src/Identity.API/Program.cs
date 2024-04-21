@@ -6,6 +6,7 @@ using hms.Identity.API.Authorization.Constants;
 using hms.Identity.API.Data;
 using hms.Identity.API.Models;
 using hms.Identity.API.Services;
+using hms.Identity.API.Services.Interfaces;
 using hms.Identity.API.DTOs;
 var builder = WebApplication.CreateBuilder(args);
 
