@@ -15,6 +15,17 @@ builder.Services.AddHttpClient("MyHttpClient", client =>
     client.BaseAddress = new Uri("http://tenant-api");
 });
 
+//builder.Services.AddHttpClient("TenantAPIHttpClient", client =>
+//{
+
+//    client.BaseAddress = new Uri("http://tenant-api");
+//});
+//builder.Services.AddHttpClient("IdentifyAPIHttpClient", client =>
+//{
+
+//    client.BaseAddress = new Uri("http://tenant-api");
+//});
+
 //builder.Services.AddTransient<ApiHelper>();
 
 var app = builder.Build();

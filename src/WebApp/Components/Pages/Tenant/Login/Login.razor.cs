@@ -1,46 +1,47 @@
 ﻿using hms.Tenant.API.Model;
 using System.ComponentModel.DataAnnotations;
 using WebApp.Services;
-
+using hms.Identity.API.DTOs;
 
 namespace WebApp.Components.Pages.Tenant.Login
 {
-    //interface UserLoginData 
-    //{
-    //    string Username { get; set; }
-    //    string Password { get; set; }
-    //}
+
+
+    
     public partial class Login
     {
-        string Username { get; set; }
-        string Password { get; set; }
+        string? Username { get; set; }
+        string? Password { get; set; }
 
-        private string requestUri;
+        private string? requestUri;
 
-        private ApiHelper helper;
+        private ApiHelper? helper;
 
 
+        
 
         async private void HandleLogin()
         {
-            Console.WriteLine(Username, Password);
-            Console.WriteLine(" clicked");
-            //try
-            //{
-            //    UserLoginData data =
-            //    {
-            //         Username= Username,
-            //         Password= Password
-            //    };
-            //    requestUri = $"/api/tenants/";
-            //    var response = await helper.PostRequest<UserLoginData>(requestUri,data);
+            //data.Username = Username;
+            Console.WriteLine(Username);
+            Console.WriteLine( Password);
 
-            //}
-            //catch (HttpRequestException ex)
-            //{
-            //    // Handle exceptions (e.g., network errors)
-            //    Console.WriteLine($"Error: {ex.Message}");
-            //}
+
+            ApplicationUserLoginDTO user = new ApplicationUserLoginDTO();
+            user.EmailOrUserName = Username;
+            user.Password = Password;
+
+            try
+            {
+                requestUri = $"http://localhost:5085/Account/login";
+                var response = await helper.PostRequest<ApplicationUserLoginDTO>(requestUri, user);
+                Console.WriteLine(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                // Handle exceptions (e.g., network errors)
+                Console.WriteLine($"Error: {ex.Message}");
+            }
 
         }
 
