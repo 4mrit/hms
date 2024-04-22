@@ -10,7 +10,13 @@ public interface IAccountService<T, TLogin, TRegister> {
   SignInUsingUserNameOrEmailAsync(TLogin request);
 
   public Task Register(TRegister user);
+
+  public Task RegisterAdmin(TRegister user);
+
   public Task<Microsoft.AspNetCore.Identity.IdentityResult>
   ChangePassword(string emailOrUserName, string oldPassword,
                  string newPassword);
+
+  public Task<IList<System.Security.Claims.Claim>>
+  GetClaimsUserUsingUserName(string userName);
 }

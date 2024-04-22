@@ -2,29 +2,34 @@ using hms.Identity.API.Models;
 using Microsoft.AspNetCore.Identity;
 using hms.Identity.API.DTOs;
 using System.ComponentModel.DataAnnotations;
+using hms.Identity.API.Authorization.Constants;
 namespace hms.Identity.API.Services;
 
 public class EFAccountService
     : IAccountService<ApplicationUser, ApplicationUserLoginDTO,
-                      ApplicationUserRegisterDTO> {
+                      ApplicationUserRegisterDTO>
+{
   private SignInManager<ApplicationUser> _signInManager;
   private UserManager<ApplicationUser> _userManager;
   private static readonly EmailAddressAttribute _emailAddressAttribute = new();
 
   public EFAccountService(SignInManager<ApplicationUser> signInManager,
-                          UserManager<ApplicationUser> userManager) {
+                          UserManager<ApplicationUser> userManager)
+  {
     _signInManager = signInManager;
     _userManager = userManager;
   }
 
   public async Task<SignInResult> SignInUsingUserNameAsync(string userName,
-                                                           string Password) {
+                                                           string Password)
+  {
     return await _signInManager.PasswordSignInAsync(userName, Password, false,
                                                     false);
   }
 
   public async Task<SignInResult> SignInUsingEmailAsync(string Email,
-                                                        string Password) {
+                                                        string Password)
+  {
     if (!_userManager.SupportsUserEmail)
       throw new NotSupportedException(
           $"{nameof(SignInUsingEmailAsync)} requires a user store with email support.");
@@ -38,7 +43,8 @@ public class EFAccountService
   }
 
   public async Task<SignInResult>
-  SignInUsingUserNameOrEmailAsync(ApplicationUserLoginDTO user) {
+  SignInUsingUserNameOrEmailAsync(ApplicationUserLoginDTO user)
+  {
     if (string.IsNullOrEmpty(user.EmailOrUserName))
       throw new ValidationException("Email or Username Required !!");
 
@@ -48,38 +54,78 @@ public class EFAccountService
       return await SignInUsingUserNameAsync(user.EmailOrUserName,
                                             user.Password);
   }
-  public Task Register(ApplicationUserRegisterDTO userDTO) {
+  public Task Register(ApplicationUserRegisterDTO userDTO)
+  {
 
     if (string.IsNullOrEmpty(userDTO.Email) &&
-        string.IsNullOrEmpty(userDTO.UserName)) {
+        string.IsNullOrEmpty(userDTO.UserName))
+    {
       throw new ValidationException(
           "UserName or Email Required for User Registration");
     }
 
-    var user = new ApplicationUser() { UserName = userDTO.UserName,
-                                       Email = userDTO.Email,
-                                       PhoneNumber = userDTO.PhoneNumber };
+    var user = new ApplicationUser()
+    {
+      UserName = userDTO.UserName,
+      Email = userDTO.Email,
+      PhoneNumber = userDTO.PhoneNumber
+    };
 
     return _userManager.CreateAsync(user, userDTO.Password);
+  }
+  public Task RegisterAdmin(ApplicationUserRegisterDTO userDTO)
+  {
+
+    if (string.IsNullOrEmpty(userDTO.Email) &&
+        string.IsNullOrEmpty(userDTO.UserName))
+    {
+      throw new ValidationException(
+          "UserName or Email Required for User Registration");
+    }
+
+    var user = new ApplicationUser()
+    {
+      UserName = userDTO.UserName,
+      Email = userDTO.Email,
+      PhoneNumber = userDTO.PhoneNumber
+    };
+
+    var result = _userManager.CreateAsync(user, userDTO.Password);
+    var claim = new System.Security.Claims.Claim(ApplicationClaims.Role,
+                                                 ApplicationRoles.Admin);
+    return _userManager.AddClaimAsync(user, claim);
   }
 
   public async Task<IdentityResult> ChangePassword(string emailOrUserName,
                                                    string oldPassword,
-                                                   string newPassword) {
+                                                   string newPassword)
+  {
     var user = await GetUserFromEmailOrUserName(emailOrUserName);
     return await _userManager.ChangePasswordAsync(user, oldPassword,
                                                   newPassword);
   }
 
   private async Task<ApplicationUser>
-  GetUserFromEmailOrUserName(string emailOrUserName) {
+  GetUserFromEmailOrUserName(string emailOrUserName)
+  {
     if (string.IsNullOrEmpty(emailOrUserName))
       throw new ValidationException("Email or Username Required !!");
 
-    if (_emailAddressAttribute.IsValid(emailOrUserName)) {
+    if (_emailAddressAttribute.IsValid(emailOrUserName))
+    {
       return await _userManager.FindByEmailAsync(emailOrUserName);
-    } else {
+    }
+    else
+    {
       return await _userManager.FindByNameAsync(emailOrUserName);
     }
+  }
+
+  public async Task<IList<System.Security.Claims.Claim>>
+  GetClaimsUserUsingUserName(string userName)
+  {
+
+    return await _userManager.GetClaimsAsync(
+        await _userManager.FindByNameAsync(userName));
   }
 }
