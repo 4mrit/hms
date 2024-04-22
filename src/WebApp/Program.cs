@@ -1,4 +1,5 @@
 using WebApp.Components;
+using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
@@ -11,8 +12,21 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddHttpClient("MyHttpClient", client =>
 {
 
-  client.BaseAddress = new Uri("http://tenant-api");
+    client.BaseAddress = new Uri("http://tenant-api");
 });
+
+//builder.Services.AddHttpClient("TenantAPIHttpClient", client =>
+//{
+
+//    client.BaseAddress = new Uri("http://tenant-api");
+//});
+//builder.Services.AddHttpClient("IdentifyAPIHttpClient", client =>
+//{
+
+//    client.BaseAddress = new Uri("http://tenant-api");
+//});
+
+//builder.Services.AddTransient<ApiHelper>();
 
 var app = builder.Build();
 
