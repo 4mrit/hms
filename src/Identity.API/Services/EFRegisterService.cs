@@ -16,43 +16,29 @@ public class EFRegisterService : IRegisterService<ApplicationUserRegisterDTO>
     _userManager = userManager;
   }
 
-  public Task Register(ApplicationUserRegisterDTO userDTO)
+  public Task<IdentityResult> Register(ApplicationUserRegisterDTO userDTO)
   {
-    if (string.IsNullOrEmpty(userDTO.Email) &&
-        string.IsNullOrEmpty(userDTO.UserName))
-    {
-      throw new ValidationException(
-          "UserName or Email Required for User Registration");
-    }
-
     var user = new ApplicationUser()
     {
       UserName = userDTO.UserName,
       Email = userDTO.Email,
       PhoneNumber = userDTO.PhoneNumber
     };
-
     return _userManager.CreateAsync(user, userDTO.Password);
   }
-  public Task RegisterAdmin(ApplicationUserRegisterDTO userDTO)
-  {
-    if (string.IsNullOrEmpty(userDTO.Email) &&
-        string.IsNullOrEmpty(userDTO.UserName))
-    {
-      throw new ValidationException(
-          "UserName or Email Required for User Registration");
-    }
 
+  public Task<IdentityResult>
+  RegisterAdmin(ApplicationUserRegisterDTO userDTO)
+  {
     var user = new ApplicationUser()
     {
       UserName = userDTO.UserName,
       Email = userDTO.Email,
       PhoneNumber = userDTO.PhoneNumber
     };
-
-    var result = _userManager.CreateAsync(user, userDTO.Password);
     var claim = new System.Security.Claims.Claim(ApplicationClaims.Role,
                                                  ApplicationRoles.Admin);
-    return _userManager.AddClaimAsync(user, claim);
+    _userManager.AddClaimAsync(user, claim);
+    return _userManager.CreateAsync(user, userDTO.Password);
   }
 }

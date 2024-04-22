@@ -1,9 +1,7 @@
 using hms.Tenant.API.Services;
 using hms.Tenant.API.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using hms.Identity.API.Models;
-using hms.Identity.API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 

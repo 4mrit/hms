@@ -1,10 +1,9 @@
-using hms.Identity.API.Services;
-using hms.Identity.API.Services.Interfaces;
-using hms.Identity.API.Models;
 using hms.Identity.API.DTOs;
+using hms.Identity.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 namespace hms.Identity.API.Controllers;
+
 [Route("[controller]")]
 [ApiController]
 public class AccountController : ControllerBase
@@ -31,26 +30,27 @@ public class AccountController : ControllerBase
 
   [AllowAnonymous]
   [HttpPost("register")]
-  public async Task Register(ApplicationUserRegisterDTO user)
+  public async Task<IActionResult> Register(ApplicationUserRegisterDTO user)
   {
-    await _registerService.Register(user);
-    return;
+    var result = await _registerService.Register(user);
+    return result.Succeeded ? Ok(result) : BadRequest(result);
   }
 
   // [Authorize(Policy = ApplicationPolicy.Administrator)]
   [HttpPost("register/admin")]
-  public async Task RegisterAdmin(ApplicationUserRegisterDTO user)
+  public async Task<IActionResult>
+  RegisterAdmin(ApplicationUserRegisterDTO user)
   {
-    await _registerService.RegisterAdmin(user);
-    return;
+    var result = await _registerService.RegisterAdmin(user);
+    return result.Succeeded ? Ok(result) : BadRequest(result);
   }
 
   [AllowAnonymous]
   [HttpPost("login/")]
-  public async Task Login(ApplicationUserLoginDTO user)
+  public async Task<IActionResult> Login(ApplicationUserLoginDTO user)
   {
-    await _loginService.SignInUsingUserNameOrEmailAsync(user);
-    return;
+    var result = await _loginService.SignInUsingUserNameOrEmailAsync(user);
+    return result.Succeeded ? Ok(result) : BadRequest(result);
   }
 
   [HttpGet("getClaims")]
@@ -61,38 +61,42 @@ public class AccountController : ControllerBase
   }
 
   [HttpPost("changePassword")]
-  public async Task ChangePassword(ApplicationUserChangePasswordDTO user)
+  public async Task<IActionResult>
+  ChangePassword(ApplicationUserChangePasswordDTO user)
   {
-    await _passwordService.ChangePassword(user.EmailOrUserName,
-                                          user.OldPassword, user.NewPassword);
+    var result = await _passwordService.ChangePassword(
+        user.EmailOrUserName, user.OldPassword, user.NewPassword);
+    return result.Succeeded ? Ok(result) : BadRequest(result);
   }
 
   [HttpPost("forgotPassword")]
-  public async Task<string>
+  public async Task<IActionResult>
   ForgotPassword(ApplicationUserForgetPasswordDTO user)
   {
-    var link = await _passwordService.ForgetPassword(user.Email);
-    return link;
+    await _passwordService.ForgetPassword(user.Email);
+    return Ok();
   }
 
   [HttpPost("resetPassword")]
-  public async Task<string>
+  public async Task<IActionResult>
   ResetPassword(ApplicationUserResetPasswordDTO request)
   {
-    return await _passwordService.ResetPassword(request.Email, request.Token,
-                                                request.Password);
+    var result = await _passwordService.ResetPassword(
+        request.Email, request.Token, request.Password);
+    return result.Succeeded ? Ok(result) : BadRequest(result);
   }
 
   [HttpPost("sendConfirmationEmail")]
-  public async Task<string> SendConfirmationEmail(string email)
+  public async Task<IActionResult> SendConfirmationEmail(string email)
   {
-    return await _accountEmailService.SendConfirmationEmail(email);
+    await _accountEmailService.SendConfirmationEmail(email);
+    return Ok();
   }
 
   [HttpGet("confirmEmail")]
-  public async Task<string> ConfirmEmail(string userId, string code)
+  public async Task<IActionResult> ConfirmEmail(string userId, string code)
   {
     var result = await _accountEmailService.ConfirmEmail(userId, code);
-    return "Thank you for confirming your email";
+    return result.Succeeded ? Ok(result) : BadRequest(result);
   }
 }

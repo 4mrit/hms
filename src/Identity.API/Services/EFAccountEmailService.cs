@@ -32,26 +32,28 @@ public class EFAccountEmailService : IAccountEmailService
     var body = $@" 
         Click on the <a href='{confirmationLink}'> link </a>to confirm your Email !!
       ";
-    var result = _emailSender.SendEmailAsync(Email, "Confirm Email", body);
-    await result;
-    if (!result.IsCompletedSuccessfully)
-    {
-      var ex = result.Exception;
-      Console.WriteLine(ex.Message);
-      return "something went wrong";
-    }
-    return tokenSuitableForHtml;
+    var result = _emailSender.SendEmail(Email, "Confirm Email", body);
+    // if (!result.IsCompletedSuccessfully)
+    // {
+    //   var ex = result.Exception;
+    //   Console.WriteLine(ex.Message);
+    //   return "something went wrong";
+    // }
+    return result;
   }
 
-  public async Task<string> ConfirmEmail(string userId, string code)
+  public async Task<IdentityResult> ConfirmEmail(string userId, string code)
   {
     var user = await _userManager.FindByIdAsync(userId);
     var token = EncodingHelper.Decode(code);
     if (user is null)
     {
-      return "No User";
+      var errors = new List<IdentityError> { new IdentityError {
+        Code = "UserNotFound", Description = "Specfied user is not found !!"
+      } };
+      IdentityResult result = IdentityResult.Failed(errors.ToArray());
+      return result;
     }
-    await _userManager.ConfirmEmailAsync(user, token);
-    return "";
+    return await _userManager.ConfirmEmailAsync(user, token);
   }
 }

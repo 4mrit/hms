@@ -6,6 +6,6 @@ public interface IPasswordService
                  string newPassword);
 
   public Task<string> ForgetPassword(string Email);
-  public Task<string> ResetPassword(string Email, string Token,
-                                    string NewPassword);
+  public Task<Microsoft.AspNetCore.Identity.IdentityResult>
+  ResetPassword(string Email, string Token, string NewPassword);
 }

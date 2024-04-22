@@ -6,10 +6,11 @@ using hms.Identity.API.Services;
 using hms.Identity.API.Services.Interfaces;
 using hms.Identity.API.DTOs;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.AddServiceDefaults();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at
 // https://aka.ms/aspnetcore/swashbuckle
+//
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -57,4 +58,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapDefaultEndpoints();
 app.Run();

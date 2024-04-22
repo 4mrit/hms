@@ -15,21 +15,22 @@ public class SMTPEmailSender : IEmailSender
   private string _mailSenderAddress =
       "hospital.management.system.nepal@gmail.com";
 
-  public async Task SendEmailAsync(string to, string title, string body)
+  public string SendEmail(string to, string title, string body)
   {
     var email = new MimeMessage();
     email.From.Add(new MailboxAddress("Hospital", _mailSenderAddress));
     email.To.Add(new MailboxAddress("Customer", to));
     email.Subject = title;
     email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
-
+    string result;
     using (var smtp = new SmtpClient())
     {
       smtp.Connect(_smtpServerAddress, _smtpServerPort,
                    SecureSocketOptions.StartTls);
       smtp.Authenticate(_mailSenderAddress, _mailSenderPassword);
-      smtp.Send(email);
+      result = smtp.Send(email);
       smtp.Disconnect(true);
     }
+    return result;
   }
 }

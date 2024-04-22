@@ -18,5 +18,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
     <PackageReference Include="Aspire.Pomelo.EntityFrameworkCore.MySql" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\hms.ServiceDefaults\hms.ServiceDefaults.csproj" />
+  </ItemGroup>
 
 </Project>

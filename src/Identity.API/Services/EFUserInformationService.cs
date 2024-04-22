@@ -18,7 +18,6 @@ public class EFUserInformationService : IUserInformationService
   public async Task<IList<System.Security.Claims.Claim>>
   GetClaimsUserUsingUserName(string userName)
   {
-
     return await _userManager.GetClaimsAsync(
         await _userManager.FindByNameAsync(userName));
   }
