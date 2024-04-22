@@ -1,13 +1,15 @@
 ﻿using hms.Tenant.API.Model;
 using System.ComponentModel.DataAnnotations;
-using WebApp.Services;
+//using WebApp.Services;
 using hms.Identity.API.DTOs;
+using Microsoft.AspNetCore.Components;
+
 
 namespace WebApp.Components.Pages.Tenant.Login
 {
 
 
-    
+
     public partial class Login
     {
         string? Username { get; set; }
@@ -15,16 +17,17 @@ namespace WebApp.Components.Pages.Tenant.Login
 
         private string? requestUri;
 
-        private ApiHelper? helper;
+        [Inject]
+        public WebApp.Services.ApiHelper helper { get; set; }
 
 
-        
+
 
         async private void HandleLogin()
         {
             //data.Username = Username;
             Console.WriteLine(Username);
-            Console.WriteLine( Password);
+            Console.WriteLine(Password);
 
 
             ApplicationUserLoginDTO user = new ApplicationUserLoginDTO();
