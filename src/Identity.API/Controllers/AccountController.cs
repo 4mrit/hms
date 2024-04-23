@@ -82,7 +82,7 @@ public class AccountController : ControllerBase
   ResetPassword(ApplicationUserResetPasswordDTO request)
   {
     var result = await _passwordService.ResetPassword(
-        request.Email, request.Token, request.Password);
+        request.UserId, request.Token, request.Password);
     return result.Succeeded ? Ok(result) : BadRequest(result);
   }
 

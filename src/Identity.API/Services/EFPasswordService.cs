@@ -44,10 +44,10 @@ public class EFPasswordService : IPasswordService
     }
   }
 
-  public async Task<IdentityResult> ResetPassword(string email, string token,
+  public async Task<IdentityResult> ResetPassword(string userId, string token,
                                                   string newPassword)
   {
-    var user = await _userManager.FindByEmailAsync(email);
+    var user = await _userManager.FindByIdAsync(userId);
     if (user is null)
     {
       var errors = new List<IdentityError> { new IdentityError {
