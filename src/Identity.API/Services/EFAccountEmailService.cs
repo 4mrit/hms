@@ -33,12 +33,6 @@ public class EFAccountEmailService : IAccountEmailService
         Click on the <a href='{confirmationLink}'> link </a>to confirm your Email !!
       ";
     var result = _emailSender.SendEmail(Email, "Confirm Email", body);
-    // if (!result.IsCompletedSuccessfully)
-    // {
-    //   var ex = result.Exception;
-    //   Console.WriteLine(ex.Message);
-    //   return "something went wrong";
-    // }
     return result;
   }
 
@@ -57,3 +51,4 @@ public class EFAccountEmailService : IAccountEmailService
     return await _userManager.ConfirmEmailAsync(user, token);
   }
 }
+
