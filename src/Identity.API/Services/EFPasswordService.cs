@@ -44,10 +44,10 @@ public class EFPasswordService : IPasswordService
     }
   }
 
-  public async Task<IdentityResult> ResetPassword(string email, string token,
+  public async Task<IdentityResult> ResetPassword(string userId, string token,
                                                   string newPassword)
   {
-    var user = await _userManager.FindByEmailAsync(email);
+    var user = await _userManager.FindByIdAsync(userId);
     if (user is null)
     {
       var errors = new List<IdentityError> { new IdentityError {
@@ -75,9 +75,13 @@ public class EFPasswordService : IPasswordService
     var user = await _userManager.FindByEmailAsync(Email);
     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
     var tokenSuitableForHtml = EncodingHelper.Encode(token);
+    var confirmationLink =
+        $@"http://meditech.com.np/Admin/resetPassword?userId={user.Id}&code={tokenSuitableForHtml}";
+    var body = $@" 
+        Click on the <a href='{confirmationLink}'> link </a>to reset your Password !!
+      ";
 
-    var result =
-        _emailSender.SendEmail(Email, "Password Reset", tokenSuitableForHtml);
+    var result = _emailSender.SendEmail(Email, "Password Reset", body);
     return result;
   }
 }

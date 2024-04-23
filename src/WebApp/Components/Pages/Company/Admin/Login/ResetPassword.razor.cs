@@ -46,6 +46,8 @@ namespace WebApp.Components.Pages.Company.Admin.Login
 
             ApplicationUserResetPasswordDTO user = new();
             user.Password = Password;
+            user.UserId = UserId;
+            user.Token = Code;
 
             try
             {

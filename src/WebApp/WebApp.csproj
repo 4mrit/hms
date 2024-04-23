@@ -23,8 +23,8 @@
 	  <Folder Include="Components\Layout\Tenant\" />
 	</ItemGroup>
 
-	<!--<ItemGroup>
-	  <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" />
-	</ItemGroup>-->
+	<ItemGroup>
+	  <!-- <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" /> -->
+	</ItemGroup>
 
 </Project>
