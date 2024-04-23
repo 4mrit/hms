@@ -6,20 +6,17 @@ using hms.Identity.API.Services.Helpers;
 
 namespace hms.Identity.API.Services;
 
-public class EFAccountEmailService : IAccountEmailService
-{
+public class EFAccountEmailService : IAccountEmailService {
   private UserManager<ApplicationUser> _userManager;
   private IEmailSender _emailSender;
   private static readonly EmailAddressAttribute _emailAddressAttribute = new();
 
   public EFAccountEmailService(UserManager<ApplicationUser> userManager,
-                               IEmailSender emailSender)
-  {
+                               IEmailSender emailSender) {
     _userManager = userManager;
     _emailSender = emailSender;
   }
-  public async Task<string> SendConfirmationEmail(string Email)
-  {
+  public async Task<string> SendConfirmationEmail(string Email) {
     var user = await _userManager.FindByEmailAsync(Email);
     if (user is null)
       return "No user Found";
@@ -33,21 +30,13 @@ public class EFAccountEmailService : IAccountEmailService
         Click on the <a href='{confirmationLink}'> link </a>to confirm your Email !!
       ";
     var result = _emailSender.SendEmail(Email, "Confirm Email", body);
-    // if (!result.IsCompletedSuccessfully)
-    // {
-    //   var ex = result.Exception;
-    //   Console.WriteLine(ex.Message);
-    //   return "something went wrong";
-    // }
     return result;
   }
 
-  public async Task<IdentityResult> ConfirmEmail(string userId, string code)
-  {
+  public async Task<IdentityResult> ConfirmEmail(string userId, string code) {
     var user = await _userManager.FindByIdAsync(userId);
     var token = EncodingHelper.Decode(code);
-    if (user is null)
-    {
+    if (user is null) {
       var errors = new List<IdentityError> { new IdentityError {
         Code = "UserNotFound", Description = "Specfied user is not found !!"
       } };
