@@ -4,7 +4,7 @@
 
 
 <div class="register-container">
-    <form class="register-form">
+    <form class="register-form" @onsubmit="HandleRegister">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="username" @bind="Username" required>
@@ -26,8 +26,11 @@
             <input type="password" id="confirmPassword" @bind="ConfirmPassword" required>
         </div>
         <div class="form-group">
-            <input type="submit" value="Register" @onclick="HandleRegister">
+            <input type="submit" value="Register" >
         </div>
     </form>
+
+    <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
+
 </div>
 

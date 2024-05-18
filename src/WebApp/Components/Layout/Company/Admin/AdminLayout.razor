@@ -1,7 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
+
+
 <div class="page">
     
+
         <div class="sidebar">
             <AdminNav />
         </div>
@@ -16,6 +19,10 @@
 
         <article class="content px-4">
         @Body
+
+        @* Not working *@
+        <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" />
+
     </article>
     </main>
 </div>
@@ -27,6 +34,5 @@
     <a class="dismiss">🗙</a>
 </div>
 
-@code {
 
-}
+

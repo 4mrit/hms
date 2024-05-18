@@ -2,11 +2,15 @@ using WebApp.Components;
 using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.AddServiceDefaults();
 // Add services to the container.
+
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-// builder.Services.AddHttpClient();
+builder.Services.AddCors();
+
+builder.Services.AddBlazorBootstrap();
 
 
 builder.Services.AddHttpClient("MyHttpClient", client =>
@@ -15,18 +19,6 @@ builder.Services.AddHttpClient("MyHttpClient", client =>
     client.BaseAddress = new Uri("http://tenant-api");
 });
 
-//builder.Services.AddHttpClient("TenantAPIHttpClient", client =>
-//{
-
-//    client.BaseAddress = new Uri("http://tenant-api");
-//});
-//builder.Services.AddHttpClient("IdentifyAPIHttpClient", client =>
-//{
-
-//    client.BaseAddress = new Uri("http://tenant-api");
-//});
-
-//builder.Services.AddTransient<ApiHelper>();
 
 var app = builder.Build();
 
@@ -43,6 +35,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseCors(policy=> policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin() );
 
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 

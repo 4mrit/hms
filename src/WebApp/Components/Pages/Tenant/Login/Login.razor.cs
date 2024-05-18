@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 //using WebApp.Services;
 using hms.Identity.API.DTOs;
 using Microsoft.AspNetCore.Components;
-
+using  WebApp.Services;
 
 namespace WebApp.Components.Pages.Tenant.Login
 {
@@ -18,7 +18,7 @@ namespace WebApp.Components.Pages.Tenant.Login
         private string? requestUri;
 
         [Inject]
-        public WebApp.Services.ApiHelper helper { get; set; }
+        ApiHelper helper { get; set; }
 
 
 

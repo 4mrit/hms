@@ -20,11 +20,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Components\Layout\Tenant\" />
+	  <Folder Include="Components\Tenant\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <!-- <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" /> -->
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Blazor.Bootstrap" />
+	  <PackageReference Include="Blazored.Toast" />
 	</ItemGroup>
 
 </Project>

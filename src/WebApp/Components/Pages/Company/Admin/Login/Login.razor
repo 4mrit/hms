@@ -1,9 +1,10 @@
-﻿@page "/admin"
+﻿@page "/admin/login"
 @rendermode InteractiveServer
 
 <PageTitle> Login</PageTitle>
 
 <div class="login-container">
+
     <form class="login-form" @onsubmit="HandleLogin">
         <div class="form-group">
             <label for="username">Username:</label>
@@ -21,5 +22,9 @@
             <a href="/admin/forgot-password">Forgot password?</a>
         </div>
     </form>
+    
+     <Toasts class="p-3" AutoHide="true" Delay="4000" Placement="ToastsPlacement.TopRight" /> 
+
+    
 </div>
 

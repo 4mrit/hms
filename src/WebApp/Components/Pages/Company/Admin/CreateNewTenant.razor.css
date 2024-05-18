@@ -18,3 +18,24 @@
     display: grid;
     grid-template-columns: auto auto auto auto;
 }
+
+.form-group {
+    padding-bottom: 15px;
+    padding-left: 10px;
+    height:3rem;
+
+}
+
+form{
+    padding-bottom :30px; 
+    padding-top: 20px;
+}
+
+.form-section {
+    display: grid;
+    grid-template-columns: 15rem 1rem 10rem;
+}
+
+.feature-group {
+    padding-bottom: 10px;
+}
