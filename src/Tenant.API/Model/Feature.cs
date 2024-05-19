@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-namespace hms.Tenant.API.Model;
+namespace thms.Tenant.API.Model;
 public class Feature {
 
   [Column("feature_id")]

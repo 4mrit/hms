@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using hms.Tenant.API.Model;
-using hms.Media.API.Model;
-namespace hms.Tenant.API.Data;
+using thms.Tenant.API.Model;
+using thms.Media.API.Model;
+namespace thms.Tenant.API.Data;
 
 public class TenantContext : DbContext {
   public TenantContext(DbContextOptions options) : base(options) {}

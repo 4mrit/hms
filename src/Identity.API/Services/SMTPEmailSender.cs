@@ -1,11 +1,11 @@
 using MailKit.Net.Smtp;
 using MimeKit;
 using MailKit.Security;
-using hms.Identity.API.Services.Interfaces;
+using thms.Identity.API.Services.Interfaces;
 // using System.Net.Mail;
 // using System.Net;
 
-namespace hms.Identity.API.Services;
+namespace thms.Identity.API.Services;
 public class SMTPEmailSender : IEmailSender
 {
 

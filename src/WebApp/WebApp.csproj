@@ -12,7 +12,7 @@
 
 	<ItemGroup>
 
-		<ProjectReference Include="..\hms.ServiceDefaults\hms.ServiceDefaults.csproj" />
+		<ProjectReference Include="..\thms.ServiceDefaults\thms.ServiceDefaults.csproj" />
 		<ProjectReference Include="..\Tenant.API\Tenant.API.csproj" />
 		<ProjectReference Include="..\Identity.API\Identity.API.csproj" />
 		<ProjectReference Include="..\Media.API\Media.API.csproj" />

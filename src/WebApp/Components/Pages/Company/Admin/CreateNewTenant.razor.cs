@@ -1,10 +1,10 @@
-﻿using hms.Tenant.API.Model;
+﻿using thms.Tenant.API.Model;
 using Microsoft.CodeAnalysis.Differencing;
 using System.Collections.ObjectModel;
 using WebApp.Services;
 using System.Collections.ObjectModel;
-using hms.Tenant.API.Model;
-using hms.Media.API.Model;
+using thms.Tenant.API.Model;
+using thms.Media.API.Model;
 using Microsoft.AspNetCore.Components;
 
 namespace WebApp.Components.Pages.Company.Admin

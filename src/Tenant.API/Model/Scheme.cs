@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using hms.Media.API.Model;
-namespace hms.Tenant.API.Model;
+using thms.Media.API.Model;
+namespace thms.Tenant.API.Model;
 
 public class Scheme {
 

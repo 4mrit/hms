@@ -1,9 +1,9 @@
 // TenantsController.cs
 using Microsoft.AspNetCore.Mvc;
-using hms.Tenant.API.Services;
-using hms.Tenant.API.Model;
-using hms.Tenant.API.Extensions;
-namespace hms.Tenant.API.Controllers;
+using thms.Tenant.API.Services;
+using thms.Tenant.API.Model;
+using thms.Tenant.API.Extensions;
+namespace thms.Tenant.API.Controllers;
 
 [Route("api/Tenants/[controller]")]
 [ApiController]

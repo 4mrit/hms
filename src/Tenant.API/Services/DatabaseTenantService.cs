@@ -1,11 +1,11 @@
 using Bogus;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using hms.Tenant.API.Data;
-using hms.Tenant.API.Model;
-using hms.Media.API.Model;
+using thms.Tenant.API.Data;
+using thms.Tenant.API.Model;
+using thms.Media.API.Model;
 
-namespace hms.Tenant.API.Services;
+namespace thms.Tenant.API.Services;
 
 public class DatabaseTenantService {
   public IWebHostEnvironment WebHostEnvironment { get; }

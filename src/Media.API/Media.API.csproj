@@ -11,5 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\thms.ServiceDefaults\thms.ServiceDefaults.csproj" />
+  </ItemGroup>
 </Project>

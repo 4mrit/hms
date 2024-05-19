@@ -1,4 +1,4 @@
-namespace hms.Identity.API.Services.Interfaces;
+namespace thms.Identity.API.Services.Interfaces;
 public interface IUserInformationService
 {
   public Task<IList<System.Security.Claims.Claim>>

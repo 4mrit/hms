@@ -1,6 +1,6 @@
 ﻿using BlazorBootstrap;
 using Bogus.DataSets;
-using hms.Identity.API.DTOs;
+using thms.Identity.API.DTOs;
 using Microsoft.AspNetCore.Components;
 using WebApp.Services;
 

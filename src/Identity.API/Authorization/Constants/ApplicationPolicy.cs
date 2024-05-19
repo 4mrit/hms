@@ -1,4 +1,4 @@
-namespace hms.Identity.API.Authorization.Constants;
+namespace thms.Identity.API.Authorization.Constants;
 
 public static class ApplicationPolicy
 {

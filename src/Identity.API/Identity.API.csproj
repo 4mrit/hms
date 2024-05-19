@@ -20,7 +20,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\hms.ServiceDefaults\hms.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\thms.ServiceDefaults\thms.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
