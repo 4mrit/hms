@@ -1,16 +1,7 @@
 ﻿@page "/admin/newuser/"
-@inject IHttpClientFactory ClientFactory
-@using System.Collections.ObjectModel
-@using hms.Tenant.API.Model;
-@using hms.Media.API.Model;
-@inject NavigationManager NavigationManager
+
 @rendermode InteractiveServer
-@inject HttpClient Http
 @using WebApp.Services; 
-
-@inject WebApp.Services.ApiHelper apiHelper;
-
-
 
 
 
@@ -21,28 +12,109 @@
 
 
     <form @onsubmit="DetailSubmit">
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" @bind="name" placeholder="Name" />
-            <br />
-        </div>
-        <div class="form-group">
-            <label>Address</label>
-            <input type="text" @bind="address" placeholder="Address" />
-            <br />
-        </div>
-        <div class="form-group">
-            <label>URL</label>
-            <input type="text" @bind="url" placeholder="URL" />
-            <br />
-        </div>
-        <div class="form-group">
-            <label>Media Root Path</label>
-            <input type="text" @bind="mediaRootPath" placeholder="Media Root Path" />
-            <br />
-        </div>
+        <div class="form-section">
+
+            <div class="first-grid">
+                <div class="form-group">
+                    <label>Name</label>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Address</label>
+
+                </div>
+
+                <div class="form-group">
+                <label>URL</label>
+
+                </div>
+
+            <div class="form-group">
+                    <label>Media Root Path</label>
+
+                </div>
+            <div class="form-group">
+                    <label>Primary Color Hex Value</label>
+
+                </div>
+            <div class="form-group">
+                    <label>Secondary Color Hex Value</label>
+
+                </div>
+            <div class="form-group">
+                    <label>Primary Database</label>
+
+                </div>
+            <div class="form-group">
+                    <label>Secondary Database</label>
+
+                </div>
+            </div>
+
+            <div class="second-grid">
+                <div class="form-group">
+                <input type="text" @bind="name" placeholder="Name" />
+
+                </div>
+            <div class="form-group">
+                <input type="text" @bind="address" placeholder="Address" />
+
+                </div>
+            <div class="form-group">
+                <input type="text" @bind="url" placeholder="URL" />
+
+                </div>
+            <div class="form-group">
+                <input type="text" @bind="mediaRootPath" placeholder="Media Root Path" />
+
+                </div>
+            <div class="form-group">
+                <input type="text" @bind="primaryColorHexValue" placeholder="Primary Color Hex Value" />
+
+                </div>
+            <div class="form-group">
+                <input type="text" @bind="secondaryColorHexValue" placeholder="Secondary Color Hex Value" />
+
+                </div>
+            <div class="form-group">
+                <input type="text" @bind="primaryDatabase" placeholder="Primary Database" />
+
+                </div>
+            <div class="form-group">
+                <input type="text" @bind="secondaryDatabase" placeholder="Secondary Database" />
+
+                </div>
+            </div>
+            @* <div class="form-group">
+                <br />
+            </div>
+            <div class="form-group">
+                <br />
+            </div>
+            <div class="form-group">
+                <br />
+            </div>
+            <div class="form-group">
+                <br />
+            </div>
+
+            <div class="form-group">
+                <br />
+            </div>
+            <div class="form-group">
+                <br />
+            </div>
+            <!-- Other form fields... -->
+            <div class="form-group">
+                <br />
+            </div>
+            <div class="form-group">
+                <br />
+        </div>*@
+        </div> 
         <!-- Features -->
-        <div class="form-group ">
+        <div class="feature-group ">
             <lable>Features</lable>
 
 
@@ -63,155 +135,10 @@
 
         </div>
 
-        <br />
-        <div class="form-group">
-            <label>Primary Color Hex Value</label>
-            <input type="text" @bind="primaryColorHexValue" placeholder="Primary Color Hex Value" />
-            <br />
-        </div>
-        <div class="form-group">
-            <label>Secondary Color Hex Value</label>
-            <input type="text" @bind="secondaryColorHexValue" placeholder="Secondary Color Hex Value" />
-            <br />
-        </div>
-        <!-- Other form fields... -->
-        <div class="form-group">
-            <label>Primary Database</label>
-            <input type="text" @bind="primaryDatabase" placeholder="Primary Database" />
-            <br />
-        </div>
-        <div class="form-group">
-            <label>Secondary Database</label>
-            <input type="text" @bind="secondaryDatabase" placeholder="Secondary Database" />
-            <br />
-        </div>
         <button type="submit">Submit</button>
     </form>
 
 
 
 
-@* } *@
-
-@code {
-    private HospitalTenant tenants  = new HospitalTenant();
-
-
-    
-
-    private ApiHelper helper;
-
-    public class FeatureViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public bool IsChecked { get; set; }
-    }
-    
-    
-
-    private FeatureViewModel[] getfeatures;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            
-            helper = new ApiHelper(ClientFactory, "MyHttpClient");
-            base.OnInitialized();
-
-
-            // Api request to get list of all the features
-            var requestUri = "api/Tenants/Feature";
-            getfeatures = await helper.GetRequest<FeatureViewModel[]>(requestUri);
-
-            // Api request to get Tenants Detail
-
-
-
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-
-        }
-    }
-
-    private string name;
-    private string address;
-    private string url;
-    private string mediaRootPath;
-    private string primaryColorHexValue;
-    private string secondaryColorHexValue;
-    private string primaryDatabase;
-    private string secondaryDatabase;
-
-    private async Task DetailSubmit()
-    {
-
-
-
-        tenants.Name = name;
-        tenants.Address = address;
-        tenants.Url = url;
-        tenants.MediaRootPath = mediaRootPath;
-
-
-        tenants.Features = new List<Feature>();
-        foreach (var featuredata in getfeatures)
-        {
-            if (featuredata.IsChecked)
-            {
-                Feature newfeature = new Feature
-                    {
-                        // Id = featuredata.Id,
-                        Name = featuredata.Name
-                    };
-                tenants.Features.Add(newfeature);
-
-
-            }
-        }
-
-        tenants.Scheme = new Scheme();
-        tenants.Scheme.PrimaryColor = new Color();
-        tenants.Scheme.SecondaryColor = new Color();
-
-
-        tenants.Scheme.PrimaryColor.HexValue = primaryColorHexValue;
-        tenants.Scheme.SecondaryColor.HexValue = secondaryColorHexValue;
-
-        tenants.Databases = new Collection<TenantDatabase>()
-        {
-            new TenantDatabase(){IsPrimary = true, ConnectionString = primaryDatabase},
-            new TenantDatabase(){IsPrimary = false, ConnectionString= secondaryDatabase}
-
-        };
-
-
-
-        try
-        {
-            var requestUri = "api/Tenants/";
-
-            var response = await helper.PostRequest<HospitalTenant>(requestUri, tenants);
-            Console.WriteLine("Form data submitted successfully!");
-            NavigationManager.NavigateTo("admin/tenants");
-
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-
-        }
-        // Send the form data to your API (adjust the URL as needed)
-        // var response = await Http.PostAsJsonAsync("https://your-api-url/api/resource", formData);
-        // response.EnsureSuccessStatusCode(); // Ensure a successful response
-
-        // Handle the response as needed (e.g., show a success message)
-
-        
-        }
-    
-}
 

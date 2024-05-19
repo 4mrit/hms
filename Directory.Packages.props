@@ -8,6 +8,8 @@
     <PackageVersion Include="Aspire.Hosting" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-preview.2.23619.3" />
     <PackageVersion Include="AutoMapper" Version="13.0.1" />
+    <PackageVersion Include="Blazor.Bootstrap" Version="2.2.0" />
+    <PackageVersion Include="Blazored.Toast" Version="4.2.1" />
     <PackageVersion Include="Bogus" Version="35.5.0" />
     <PackageVersion Include="MailKit" Version="4.5.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(EntityFrameworkCoreVersion)" />

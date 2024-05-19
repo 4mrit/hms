@@ -22,27 +22,35 @@ namespace WebApp.Services
 
         }
 
-        public async Task<T> PostRequest<T>(string apiPath, T data)
+        //public async Task<T> PostRequest<T>(string apiPath, T data)
+        //{
+        //    T obj;
+
+        //    var response = await _httpClient.PostAsJsonAsync(apiPath, data);
+        //    Console.WriteLine(response);
+        //    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        //    {
+        //        var options = new JsonSerializerOptions
+        //        {
+        //            PropertyNameCaseInsensitive = true
+        //        };
+        //        string apiResponse = await response.Content.ReadAsStringAsync();
+        //        obj = JsonSerializer.Deserialize<T>(apiResponse, options);
+        //        return obj;
+        //    }
+        //    else
+        //    {
+        //        obj = Activator.CreateInstance<T>();
+        //        return obj;
+        //    }
+        //}
+        public async Task<HttpResponseMessage> PostRequest <T>(string apiPath, T data)
         {
-            T obj;
+            //T obj;
 
             var response = await _httpClient.PostAsJsonAsync(apiPath, data);
             Console.WriteLine(response);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                string apiResponse = await response.Content.ReadAsStringAsync();
-                obj = JsonSerializer.Deserialize<T>(apiResponse, options);
-                return obj;
-            }
-            else
-            {
-                obj = Activator.CreateInstance<T>();
-                return obj;
-            }
+            return response;
         }
 
 

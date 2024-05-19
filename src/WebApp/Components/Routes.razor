@@ -12,6 +12,11 @@
             <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.Company.Admin.AdminLayout)" />
 
         }
+        else if (routeData.PageType.FullName.Contains("WebApp.Components.Pages.Tenant"))
+        {
+            <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.Tenant.TenantLayout)" />
+
+        }
         else
         {
             <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.Company.Admin.MainLayout)" />

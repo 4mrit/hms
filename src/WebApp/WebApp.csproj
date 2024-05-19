@@ -14,14 +14,22 @@
 
 		<ProjectReference Include="..\hms.ServiceDefaults\hms.ServiceDefaults.csproj" />
 		<ProjectReference Include="..\Tenant.API\Tenant.API.csproj" />
+		<ProjectReference Include="..\Identity.API\Identity.API.csproj" />
+		<ProjectReference Include="..\Media.API\Media.API.csproj" />
+
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Components\Layout\Tenant\" />
+	  <Folder Include="Components\Tenant\" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <!-- <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" /> -->
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Blazor.Bootstrap" />
+	  <PackageReference Include="Blazored.Toast" />
 	</ItemGroup>
 
 </Project>
