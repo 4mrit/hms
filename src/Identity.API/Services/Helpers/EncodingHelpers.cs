@@ -2,7 +2,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace hms.Identity.API.Services.Helpers;
+namespace thms.Identity.API.Services.Helpers;
 
 public static class EncodingHelper
 {

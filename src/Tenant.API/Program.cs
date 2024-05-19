@@ -1,5 +1,5 @@
-using hms.Tenant.API.Services;
-using hms.Tenant.API.Data;
+using thms.Tenant.API.Services;
+using thms.Tenant.API.Data;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);

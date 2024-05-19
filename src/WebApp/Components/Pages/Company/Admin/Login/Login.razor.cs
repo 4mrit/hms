@@ -1,7 +1,7 @@
-﻿using hms.Tenant.API.Model;
+﻿using thms.Tenant.API.Model;
 using System.ComponentModel.DataAnnotations;
 using WebApp.Services;
-using hms.Identity.API.DTOs;
+using thms.Identity.API.DTOs;
 using Microsoft.AspNetCore.Components;
 using BlazorBootstrap;
 

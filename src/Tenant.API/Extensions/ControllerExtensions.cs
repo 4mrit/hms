@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
-namespace hms.Tenant.API.Extensions;
+namespace thms.Tenant.API.Extensions;
 
 public static class ControllerExtensions
 {

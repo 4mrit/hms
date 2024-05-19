@@ -1,8 +1,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using hms.Identity.API.Models;
-using hms.Identity.API.Authorization.Constants;
+using thms.Identity.API.Models;
+using thms.Identity.API.Authorization.Constants;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 [Route("api/[controller]")]

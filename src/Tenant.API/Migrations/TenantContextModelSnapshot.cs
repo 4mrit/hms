@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using hms.Tenant.API.Data;
+using thms.Tenant.API.Data;
 
 #nullable disable
 

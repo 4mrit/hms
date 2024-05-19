@@ -1,10 +1,10 @@
-using hms.Identity.API.Models;
+using thms.Identity.API.Models;
 using Microsoft.AspNetCore.Identity;
-using hms.Identity.API.DTOs;
+using thms.Identity.API.DTOs;
 using System.ComponentModel.DataAnnotations;
-using hms.Identity.API.Authorization.Constants;
-using hms.Identity.API.Services.Interfaces;
-namespace hms.Identity.API.Services;
+using thms.Identity.API.Authorization.Constants;
+using thms.Identity.API.Services.Interfaces;
+namespace thms.Identity.API.Services;
 
 public class EFRegisterService : IRegisterService<ApplicationUserRegisterDTO>
 {

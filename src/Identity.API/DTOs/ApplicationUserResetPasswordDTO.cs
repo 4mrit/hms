@@ -1,4 +1,4 @@
-namespace hms.Identity.API.DTOs;
+namespace thms.Identity.API.DTOs;
 
 public class ApplicationUserResetPasswordDTO
 {

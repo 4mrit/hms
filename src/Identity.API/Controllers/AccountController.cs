@@ -1,8 +1,8 @@
-using hms.Identity.API.DTOs;
-using hms.Identity.API.Services.Interfaces;
+using thms.Identity.API.DTOs;
+using thms.Identity.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-namespace hms.Identity.API.Controllers;
+namespace thms.Identity.API.Controllers;
 
 [Route("[controller]")]
 [ApiController]

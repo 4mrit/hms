@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using hms.Identity.API.Models;
+using thms.Identity.API.Models;
 
-namespace hms.Identity.API.Data;
+namespace thms.Identity.API.Data;
 
 public class AppDbContext
 (DbContextOptions<AppDbContext> options)

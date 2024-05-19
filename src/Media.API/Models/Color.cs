@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-namespace hms.Media.API.Model;
+namespace thms.Media.API.Model;
 public class Color {
 
   [Column("color_id")]

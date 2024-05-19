@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using hms.Tenant.API.Data;
-using hms.Tenant.API.Model;
+using thms.Tenant.API.Data;
+using thms.Tenant.API.Model;
 
-namespace hms.Tenant.API.Services;
+namespace thms.Tenant.API.Services;
 
 public class DatabaseFeatureService
 {

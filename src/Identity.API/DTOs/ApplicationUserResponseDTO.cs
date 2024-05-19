@@ -1,4 +1,4 @@
-namespace hms.Identity.API.DTOs;
+namespace thms.Identity.API.DTOs;
 public class ApplicationUserResponseDTO {
   public string Id { get; protected init; } = null!;
   public string UserNameOrEmail { get; protected init; } = null!;

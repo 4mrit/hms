@@ -1,4 +1,4 @@
-namespace hms.Identity.API.DTOs;
+namespace thms.Identity.API.DTOs;
 public class ApplicationUserChangePasswordDTO {
   public string EmailOrUserName { get; set; } = null!;
   public string OldPassword { get; set; } = null!;

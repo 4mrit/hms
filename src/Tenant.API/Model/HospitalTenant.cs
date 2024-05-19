@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-namespace hms.Tenant.API.Model;
+namespace thms.Tenant.API.Model;
 public class HospitalTenant {
   // allow null
   // public string? Address { get; set; }
