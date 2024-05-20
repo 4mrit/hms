@@ -13,7 +13,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hms.ApiGateway\hms.ApiGateway.csproj" />
-
-      <ProjectReference Include="..\..\hms.ServiceDefaults\hms.ServiceDefaults.csproj" />
   </ItemGroup>
 </Project>

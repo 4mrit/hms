@@ -21,7 +21,6 @@ builder.Services.AddHttpClient("MyHttpClient", client =>
   ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
 });
 
-
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
