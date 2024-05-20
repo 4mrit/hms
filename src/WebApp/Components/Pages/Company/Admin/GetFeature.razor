@@ -7,10 +7,10 @@
 
 
 
-<h3>Feature</h3>
+<h3>Features</h3>
 
-<button @onclick="CreateNewFeature">Create new Feature</button>
 
+<Button Color="ButtonColor.Primary" @onclick="CreateNewFeature" Type="ButtonType.Link"> Create New Feature </Button>
 
 
 <br />
@@ -29,7 +29,8 @@
                     @* <input type="checkbox" id="@($"feature{feature.Id}")" value="@($"feature{feature.Id}")" @bind="feature.IsChecked" /> *@
                     <label for="@($"feature{feature.Id}")">@feature.Name</label>
                 </div>
-            }
+
+                           }
 
         </div>
     }
@@ -82,6 +83,9 @@
 
         }
     }
+
+    
+
 
     private void CreateNewFeature()
     {

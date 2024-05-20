@@ -10,8 +10,18 @@
 
 
 
-<h1>Hospital</h1>
-
+<Alert Color="AlertColor.Light">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="alert-heading">
+            Hospitals
+        </h1>
+        <Button Color="ButtonColor.Primary">
+            <NavLink href="/Admin/newuser/" class="nav-link" Match="NavLinkMatch.All">
+                <i class="bi bi-plus-circle"/> Add Tenant
+            </NavLink>
+        </Button>
+    </div>
+</Alert>
 
 
 @if (Tenants == null)
