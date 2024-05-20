@@ -19,68 +19,27 @@
     } 
     else
     { 
-        <div>
-            
-            <p>
-
-            Name:     @tenants.Name
-            </p>
-
-            <p>
-
-            Address:  @tenants.Address
-            </p>
-
-            <p>
-
-            URL:     <a href="http://www.@tenants.Url">
-
-            http://www.@tenants.Url
-            </a>
-            </p>
-
-            <p>
-
-            PrimaryColor: @tenants.Scheme.PrimaryColor.HexValue
-            </p>
-
-            <p>
-
-            SecondaryColor: @tenants.Scheme.SecondaryColor.HexValue
-            </p>
-
-            <p>
-
-            Features:  
+      <Card Style="width:25rem;">
+        <CardBody>
+          <CardTitle><b>Name : </b>@tenants.Name</CardTitle>
+          <CardTitle><b>Address: </b> @tenants.Address</CardTitle>
+          <CardTitle><b>URL: </b><a href="http://www.@tenants.Url" > http://www.@tenants.Url </a></CardTitle>
+          <CardTitle><b>PrimaryColor: </b>@tenants.Scheme.PrimaryColor.HexValue</CardTitle>
+          <CardTitle><b>SecondaryColor: </b>@tenants.Scheme.SecondaryColor.HexValue</CardTitle>
+          <CardTitle><b>Features:</b></CardTitle>
+          
                 @foreach(var data in tenants.Features)
                 {
-                    @data.Name;
-                    <span>, </span>
+                    <CardTitle>  
+                    @data.Name
+                  </CardTitle>
                     
-                }
-            </p>
-
-
-            <button 
-                
-                class="btn btn-primary"
-                @onclick="EditButton">
-                Edit
-            </button>
-
-            <button 
-                type="button" 
-                class="btn btn-danger"
-                @onclick="DeleteButton">
-                Delete
-            </button>
-
-        </div>
-
-       
-            
+                } 
+                <Button Color="ButtonColor.Primary" @onclick="EditButton" Type="ButtonType.Link"> Edit </Button>
+                <Button Color="ButtonColor.Danger" @onclick="DeleteButton" Type="ButtonType.Link"> Delete </Button>
+           </CardBody>
+        </Card>
     }
-    
 </p>
 
 
@@ -88,11 +47,8 @@
 
     [Parameter] public int id { get; set; } 
     private HospitalTenant tenants;
-
     private string requestUri;
-
     private ApiHelper helper;
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -106,9 +62,6 @@
 
             // Request an GET api
             tenants = await helper.GetRequest<HospitalTenant>(requestUri);
-
-
-
         }
         catch (HttpRequestException ex)
         {
@@ -123,8 +76,6 @@
         Console.WriteLine("Edit button");
         requestUri = $"/admin/tenants/{id}/edit";
         NavigationManager.NavigateTo(requestUri);
-
-
     }
 
     async private void DeleteButton()
@@ -132,21 +83,12 @@
         try
         {
             requestUri = $"/api/tenants/{id}";
-
             var response = await helper.DeleteRequest<HospitalTenant>(requestUri);
-
             NavigationManager.NavigateTo("admin/tenants");
         }catch(Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
-
-       
         Console.WriteLine("Delete button");
-
     }
 }
-
-
-
-

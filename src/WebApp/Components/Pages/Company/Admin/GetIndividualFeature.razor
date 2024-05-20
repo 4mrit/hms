@@ -21,22 +21,29 @@
                      @bind="feature.Name"  />
                 <br />
             </div>
-            <button type="submit">Submit</button>
-
+            <br/>
+            <Button Color="ButtonColor.Primary" Type="ButtonType.Submit">
+                Save
+            </Button>
         </form>
     }
     else
     {
-        
-        @feature.Name
+      <Card>
+        <CardBody>
+          <CardTitle>
+            @feature.Name
+          </CardTitle>
+        </CardBody>
+      </Card>
+
+       
         <br />
         <br />
 
-
-        <button @onclick="EditFeature">Edit</button>
-        <button @onclick = "DeleteFeature">Delete</button>
+        <Button Color="ButtonColor.Primary" @onclick="EditFeature" Type="ButtonType.Link"> Edit </Button>
+        <Button Color="ButtonColor.Danger" @onclick="DeleteFeature" Type="ButtonType.Link"> Delete </Button>
     }
-
 }
 
 @code {
