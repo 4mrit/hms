@@ -16,9 +16,11 @@ builder.Services.AddBlazorBootstrap();
 builder.Services.AddHttpClient("MyHttpClient", client =>
 {
 
-    client.BaseAddress = new Uri("http://tenant-api");
+  client.BaseAddress = new Uri("http://tenant-api");
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+  ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; }
 });
-
 
 var app = builder.Build();
 
@@ -36,7 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.UseCors(policy=> policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin() );
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 

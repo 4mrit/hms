@@ -18,6 +18,7 @@
       <ProjectReference Include="..\Media.API\Media.API.csproj" />
       <ProjectReference Include="..\Tenant.API\Tenant.API.csproj" />
       <ProjectReference Include="..\WebApp\WebApp.csproj" />
+    <ProjectReference Include="..\hms\hms.ApiGateway\hms.ApiGateway.csproj" />
   </ItemGroup>
 
 
