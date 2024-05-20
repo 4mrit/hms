@@ -23,12 +23,27 @@
         <div class="check-features">
             @foreach (var feature in getFeatures)
             {
-                <div 
+                                <div 
                     class ="individual-feature"
                     onclick="window.location.href = window.location.href+'/@feature.Id';">
                     @* <input type="checkbox" id="@($"feature{feature.Id}")" value="@($"feature{feature.Id}")" @bind="feature.IsChecked" /> *@
-                    <label for="@($"feature{feature.Id}")">@feature.Name</label>
+<Card>
+                  <CardBody>
+                    <CardTitle>
+
+                     <label for="@($"feature{feature.Id}")"> @feature.Name </label>
+</CardTitle>
+              </CardBody>
+              </Card>
+
                 </div>
+              
+                @* <Button Color="ButtonColor.Primary"> *@
+                @*    *@
+                @*   <NavLink href="/Admin/Features/@feature.Id" class="nav-link" Match="NavLinkMatch.All"> *@
+                @*     <i class="bi bi-plus-circle"/> Add Tenant *@
+                @*   </NavLink> *@
+                @* </Button> *@
 
                            }
 

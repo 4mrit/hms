@@ -15,7 +15,6 @@ builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddHttpClient("MyHttpClient", client =>
 {
-
   client.BaseAddress = new Uri("http://tenant-api");
 }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 {
